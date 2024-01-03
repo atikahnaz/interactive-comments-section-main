@@ -6,10 +6,14 @@ import CommentsBox from "./componets/CommentsBox";
 import Data from "../data.json";
 
 function App() {
+  // callback function to save text
+  const addTextData = () => {
+    console.log("hy");
+  };
   return (
     <>
-      <div className=" border-2 border-x-fe-soft-red">
-        <CommentsBox Data={Data} />
+      <div className="">
+        <CommentsBox Data={Data} addText={addTextData} />
       </div>
     </>
   );
