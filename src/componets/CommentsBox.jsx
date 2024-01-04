@@ -4,8 +4,10 @@ import IconPlus from "../assets/images/icon-plus.svg";
 import IconMinus from "../assets/images/icon-minus.svg";
 import WriteComment from "./WriteComment";
 import Reply from "./Reply";
+import IconDelete from "../assets/images/icon-delete.svg";
+import IconEdit from "../assets/images/icon-edit.svg";
 
-export default function CommentsBox({ Data, addText }) {
+export default function CommentsBox({ Data, addText, saveCommentsText }) {
   const [showReplyBox, setShowReplyBox] = useState(null);
   const ReplyBox = (index) => {
     setShowReplyBox(index);
@@ -32,6 +34,13 @@ export default function CommentsBox({ Data, addText }) {
                   <div className="text-base pr-5 font-medium">
                     {item.user.username}
                   </div>
+                  {Data.currentUser.username === item.user.username ? (
+                    <div className="mr-5 px-1 text-xs  bg-fe-moderate-blue text-fe-white">
+                      you
+                    </div>
+                  ) : (
+                    ""
+                  )}
                   <div className="text-base text-fe-grayish-Blue">
                     {item.createdAt}
                   </div>
@@ -57,19 +66,37 @@ export default function CommentsBox({ Data, addText }) {
                     />
                   </div>
                   {/**reply */}
-                  <div className="flex items-center text-fe-moderate-blue">
-                    <img
-                      className="object-contain pr-2"
-                      src={IconReply}
-                      alt=""
-                    />
-                    <div
-                      className="font-medium"
-                      onClick={() => ReplyBox(index)}
-                    >
-                      Reply
+
+                  {Data.currentUser.username === item.user.username ? (
+                    <div className="flex items-center ">
+                      <div className="mr-2">
+                        <img src={IconDelete} alt="" />
+                      </div>
+                      <div className="font-medium text-fe-soft-red mr-3 ">
+                        Delete
+                      </div>
+                      <div className="mr-2">
+                        <img src={IconEdit} alt="" />
+                      </div>
+                      <div className="font-medium text-fe-moderate-blue">
+                        Edit
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="flex items-center text-fe-moderate-blue">
+                      <img
+                        className="object-contain pr-2"
+                        src={IconReply}
+                        alt=""
+                      />
+                      <div
+                        className="font-medium"
+                        onClick={() => ReplyBox(index)}
+                      >
+                        Reply
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -144,14 +171,14 @@ export default function CommentsBox({ Data, addText }) {
 
                       {reply.user.username == Data.currentUser.username ? (
                         <div className="flex items-center ">
-                          <div>
-                            <img src="" alt="" />
+                          <div className="mr-2">
+                            <img src={IconDelete} alt="" />
                           </div>
-                          <div className="font-medium text-fe-soft-red">
+                          <div className="font-medium text-fe-soft-red mr-3 ">
                             Delete
                           </div>
-                          <div>
-                            <img src="" alt="" />
+                          <div className="mr-2">
+                            <img src={IconEdit} alt="" />
                           </div>
                           <div className="font-medium text-fe-moderate-blue">
                             Edit
@@ -175,7 +202,10 @@ export default function CommentsBox({ Data, addText }) {
           </>
         ))}
       </div>
-      <WriteComment currentUser={Data.currentUser} />
+      <WriteComment
+        currentUser={Data.currentUser}
+        saveComments={saveCommentsText}
+      />
     </>
   );
 }
