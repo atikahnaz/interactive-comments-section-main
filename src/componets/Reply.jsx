@@ -3,14 +3,30 @@ import { useState } from "react";
 export default function Reply({ currentUser, usernameName, textReply }) {
   const [reply, setReply] = useState("@" + usernameName);
   const [replyText, setReplyText] = useState("");
+  const [replyData, setReplyData] = useState({
+    id: null,
+    content: replyText,
+    createdAt: "maybe now",
+    score: 0,
+    replyingTo: usernameName,
+    user: {
+      image: {
+        png: currentUser.image.png,
+        webp: currentUser.image.webp,
+      },
+      username: currentUser.username,
+    },
+    replies: [],
+  });
 
+  // record input changes
   const inputComment = (event) => {
     setReply(event.target.value);
     setReplyText(event.target.value);
   };
 
   const sendReply = () => {
-    textReply(replyText);
+    textReply(replyData);
   };
 
   return (
