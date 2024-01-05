@@ -7,8 +7,10 @@ import Reply from "./Reply";
 import IconDelete from "../assets/images/icon-delete.svg";
 import IconEdit from "../assets/images/icon-edit.svg";
 
-export default function CommentsBox({ Data, addText, saveCommentsText }) {
+export default function CommentsBox({ Data, addReply, saveCommentsText }) {
   const [showReplyBox, setShowReplyBox] = useState(null);
+  const [idReplies, setIdReplies] = useState(null);
+
   const ReplyBox = (index) => {
     setShowReplyBox(index);
   };
@@ -105,7 +107,8 @@ export default function CommentsBox({ Data, addText, saveCommentsText }) {
                 <Reply
                   currentUser={Data.currentUser}
                   usernameName={item.user.username}
-                  textReply={addText}
+                  idToReply={item.id}
+                  textReply={addReply}
                 />
               ) : (
                 ""
