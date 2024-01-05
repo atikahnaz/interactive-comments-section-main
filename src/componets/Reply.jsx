@@ -1,6 +1,11 @@
 import { useState } from "react";
 
-export default function Reply({ currentUser, usernameName, textReply }) {
+export default function Reply({
+  currentUser,
+  usernameName,
+  idToReply,
+  textReply,
+}) {
   const [reply, setReply] = useState("@" + usernameName);
   const [replyText, setReplyText] = useState("");
   const [replyData, setReplyData] = useState({
@@ -20,13 +25,14 @@ export default function Reply({ currentUser, usernameName, textReply }) {
   });
 
   // record input changes
-  const inputComment = (event) => {
-    setReply(event.target.value);
-    setReplyText(event.target.value);
+  const InputComment = (event) => {
+    setReplyData({ ...replyData, content: event.target.value });
   };
 
+  // callback function to save reply
   const sendReply = () => {
-    textReply(replyData);
+    textReply(replyData, idToReply);
+    setReplyData({ ...replyData, content: "" });
   };
 
   return (
@@ -34,8 +40,8 @@ export default function Reply({ currentUser, usernameName, textReply }) {
       <div className=" bg-fe-white mb-4 p-4 rounded-lg font-feRubik">
         <input
           type="text"
-          value={reply}
-          onChange={inputComment}
+          value={replyData.content}
+          onChange={InputComment}
           className="border border-fe-light-grayish-blue w-full h-28 p-4 mb-4"
         />
         <div className="flex justify-between items-center">
