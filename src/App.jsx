@@ -10,8 +10,19 @@ function App() {
   const [idNew, setIdNew] = useState(4);
 
   // callback function to save text
-  const addTextComment = () => {
+  const addTextReply = (item, idReply) => {
     console.log("hy");
+    console.log("id to reply" + idReply);
+    // add id to new reply
+    setIdNew((idNo) => {
+      const newReply = { ...item, id: idNo + 1 };
+      // find the id, and index at Data
+      Data.comments.map((comment, index) => {
+        //comment.id === idReply &&
+        //console.log("id replyyy " + comment.id + idReply);
+      });
+      return idNo + 1;
+    });
   };
 
   //callback function to save comments
@@ -36,7 +47,7 @@ function App() {
       <div className="">
         <CommentsBox
           Data={Data}
-          addText={addTextComment}
+          addReply={addTextReply}
           saveCommentsText={addCommentsText}
         />
       </div>
