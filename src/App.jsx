@@ -10,17 +10,31 @@ function App() {
   const [idNew, setIdNew] = useState(4);
 
   // callback function to save text
-  const addTextReply = (item, idReply) => {
+  const addTextReply = (item, idReplies) => {
     console.log("hy");
-    console.log("id to reply" + idReply);
+    //console.log("id to reply" + idReply);
     // add id to new reply
     setIdNew((idNo) => {
       const newReply = { ...item, id: idNo + 1 };
-      // find the id, and index at Data
-      Data.comments.map((comment, index) => {
-        //comment.id === idReply &&
-        //console.log("id replyyy " + comment.id + idReply);
+      setData({
+        ...Data,
+        comments: Data.comments.map((reply, index) =>
+          reply.id === idReplies
+            ? { ...reply, replies: [...reply.replies, newReply] }
+            : reply
+        ),
       });
+
+      // find the id, and index at Data
+      //setData({ ...Data, comments: [...Data.comments[0].replies, newReply] });
+      /*Data.comments.map((comment, index) => {
+        comment.id === 1 &&
+          setData({
+            ...comment,
+            comments: [...comment.replies, newReply],
+          });
+        console.log("id replyyy " + comment.id);
+      });*/
       return idNo + 1;
     });
   };
