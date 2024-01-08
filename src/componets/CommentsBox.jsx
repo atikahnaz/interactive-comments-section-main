@@ -13,6 +13,7 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
 
   const ReplyBox = (index) => {
     setShowReplyBox(index);
+    console.log("fefefe");
   };
 
   return (
@@ -119,87 +120,98 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
               ""
             ) : (
               <div>
-                {item.replies.map((reply, key) => (
-                  <div className=" bg-fe-white mb-4 p-4 rounded-lg">
-                    {/**profile */}
-                    <div className="flex items-center mb-4">
-                      <div className="pr-5">
-                        <img
-                          className=" w-8 h-8"
-                          src={reply.user.image.png}
-                          alt=""
-                        />
-                      </div>
-                      <div className="text-base pr-2 font-medium">
-                        {reply.user.username}
-                      </div>
-
-                      {/**current user */}
-                      {reply.user.username == Data.currentUser.username ? (
-                        <div className="mr-5 px-1 text-xs  bg-fe-moderate-blue text-fe-white">
-                          you
-                        </div>
-                      ) : (
-                        ""
-                      )}
-
-                      <div className="text-base text-fe-grayish-Blue">
-                        {reply.createdAt}
-                      </div>
-                    </div>
-
-                    {/**replies content */}
-                    <div>{reply.replyingTo}</div>
-                    <div className=" text-fe-grayish-Blue text-base mb-4">
-                      {reply.content}
-                    </div>
-
-                    {/**score and reply button */}
-                    <div className="flex justify-between">
-                      <div className="flex bg-fe-light-gray items-center rounded-lg">
-                        <img
-                          className="object-contain p-2"
-                          src={IconPlus}
-                          alt=""
-                        />
-                        <div className="p-2  text-fe-moderate-blue font-medium">
-                          {reply.score}
-                        </div>
-                        <img
-                          className="object-contain p-2"
-                          src={IconMinus}
-                          alt=""
-                        />
-                      </div>
-
-                      {reply.user.username == Data.currentUser.username ? (
-                        <div className="flex items-center ">
-                          <div className="mr-2">
-                            <img src={IconDelete} alt="" />
-                          </div>
-                          <div className="font-medium text-fe-soft-red mr-3 ">
-                            Delete
-                          </div>
-                          <div className="mr-2">
-                            <img src={IconEdit} alt="" />
-                          </div>
-                          <div className="font-medium text-fe-moderate-blue">
-                            Edit
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex items-center text-fe-moderate-blue">
+                <div className="ml-4 border-l-2 pl-4 border-fe-light-gray">
+                  {item.replies.map((reply, key) => (
+                    <div className=" bg-fe-white mb-4 p-4 rounded-lg">
+                      {/**profile */}
+                      <div className="flex items-center mb-4">
+                        <div className="pr-5">
                           <img
-                            className="object-contain pr-2"
-                            src={IconReply}
+                            className=" w-8 h-8"
+                            src={reply.user.image.png}
                             alt=""
                           />
-                          <div className="font-medium">Reply</div>
                         </div>
-                      )}
+                        <div className="text-base pr-2 font-medium">
+                          {reply.user.username}
+                        </div>
+
+                        {/**current user */}
+                        {reply.user.username == Data.currentUser.username ? (
+                          <div className="mr-5 px-1 text-xs  bg-fe-moderate-blue text-fe-white">
+                            you
+                          </div>
+                        ) : (
+                          ""
+                        )}
+
+                        <div className="text-base text-fe-grayish-Blue">
+                          {reply.createdAt}
+                        </div>
+                      </div>
+                      {/**replies content */}
+                      <div>{reply.replyingTo}</div>
+                      <div className=" text-fe-grayish-Blue text-base mb-4">
+                        {reply.content}
+                      </div>
+                      {/**score and reply button */}
+                      <div className="flex justify-between">
+                        <div className="flex bg-fe-light-gray items-center rounded-lg">
+                          <img
+                            className="object-contain p-2"
+                            src={IconPlus}
+                            alt=""
+                          />
+                          <div className="p-2  text-fe-moderate-blue font-medium">
+                            {reply.score}
+                          </div>
+                          <img
+                            className="object-contain p-2"
+                            src={IconMinus}
+                            alt=""
+                          />
+                        </div>
+
+                        {reply.user.username == Data.currentUser.username ? (
+                          <div className="flex items-center ">
+                            <div className="mr-2">
+                              <img src={IconDelete} alt="" />
+                            </div>
+                            <div className="font-medium text-fe-soft-red mr-3 ">
+                              Delete
+                            </div>
+                            <div className="mr-2">
+                              <img src={IconEdit} alt="" />
+                            </div>
+                            <div className="font-medium text-fe-moderate-blue">
+                              Edit
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex items-center text-fe-moderate-blue">
+                            <img
+                              className="object-contain pr-2"
+                              src={IconReply}
+                              alt=""
+                            />
+                            <div
+                              className="font-medium"
+                              onClick={() => ReplyBox(key)}
+                            >
+                              Reply
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <Reply
+                        currentUser={Data.currentUser}
+                        usernameName={reply.username}
+                        idToReply={reply.id}
+                        textReply={addReply}
+                      />
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
           </>
