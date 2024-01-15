@@ -10,10 +10,17 @@ import IconEdit from "../assets/images/icon-edit.svg";
 export default function CommentsBox({ Data, addReply, saveCommentsText }) {
   const [showReplyBox, setShowReplyBox] = useState(null);
   const [idReplies, setIdReplies] = useState(null);
+  const [showReplyBoxIdBased, setShowReplyBoxIdBased] = useState(null);
 
   const ReplyBox = (index) => {
     setShowReplyBox(index);
     console.log("fefefe");
+  };
+
+  const ReplyBoxId = (idNumber) => {
+    setShowReplyBoxIdBased(idNumber);
+    console.log("frf");
+    console.log(idNumber);
   };
 
   return (
@@ -196,19 +203,25 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
                             />
                             <div
                               className="font-medium"
-                              onClick={() => ReplyBox(key)}
+                              onClick={() => ReplyBoxId(reply.id)}
                             >
                               Reply
                             </div>
                           </div>
                         )}
                       </div>
-                      <Reply
-                        currentUser={Data.currentUser}
-                        usernameName={reply.username}
-                        idToReply={reply.id}
-                        textReply={addReply}
-                      />
+
+                      {/**reply box */}
+                      {showReplyBoxIdBased === reply.id ? (
+                        <Reply
+                          currentUser={Data.currentUser}
+                          usernameName={item.user.username}
+                          idToReply={item.id}
+                          textReply={addReply}
+                        />
+                      ) : (
+                        ""
+                      )}
                     </div>
                   ))}
                 </div>
