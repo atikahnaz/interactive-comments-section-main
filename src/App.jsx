@@ -9,10 +9,14 @@ function App() {
   const [Data, setData] = useState(CommentsData);
   const [idNew, setIdNew] = useState(4);
 
+  // recursive function to add replies
+
+  const RecursiveAddReplies = () => {};
+
   // callback function to save text
   const addTextReply = (item, idReplies) => {
     console.log("hy");
-    //console.log("id to reply" + idReply);
+    console.log("id to reply" + idReplies);
     // add id to new reply
     setIdNew((idNo) => {
       const newReply = { ...item, id: idNo + 1 };
