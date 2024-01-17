@@ -23,13 +23,17 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
     console.log(idNumber);
   };
 
-  const RecursiveShowReplies = ({ data }) => {
+  const RecursiveShowReplies = ({ data, idToReply }) => {
+    console.log("id to reply" + idToReply);
     return (
       <div className="ml-4 border-l-2 pl-4 border-fe-light-gray">
-        console.log("example" + JSON.stringify(data));
-        {item.replies.map((reply, key) => (
+        {data.map((reply, key) => (
           <div className=" bg-fe-white mb-4 p-4 rounded-lg">
             {/**profile */}
+            {reply.replies && (
+              <RecursiveShowReplies data={reply.replies} idToReply={reply.id} />
+            )}
+            {console.log("id to reply inside" + idToReply)}
             <div className="flex items-center mb-4">
               <div className="pr-5">
                 <img className=" w-8 h-8" src={reply.user.image.png} alt="" />
@@ -96,8 +100,8 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
             {showReplyBoxIdBased === reply.id ? (
               <Reply
                 currentUser={Data.currentUser}
-                usernameName={item.user.username}
-                idToReply={item.id}
+                usernameName={reply.user.username}
+                idToReply={reply.id}
                 textReply={addReply}
               />
             ) : (
@@ -214,6 +218,8 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
             ) : (
               <div>
                 {/**<RecursiveShowReplies data={item.replies} />*/}
+                <RecursiveShowReplies data={item.replies} idToReply={item.id} />
+                <div>non recursive</div>
                 <div className="ml-4 border-l-2 pl-4 border-fe-light-gray">
                   {item.replies.map((reply, key) => (
                     <div className=" bg-fe-white mb-4 p-4 rounded-lg">
