@@ -11,7 +11,29 @@ function App() {
 
   // recursive function to add replies
 
-  const RecursiveAddReplies = () => {};
+  const recursiveAddReplies = (comments, idReplies, newReply) =>
+    comments.map((comment) =>
+      // reply to original comment
+      comment.id === idReplies
+        ? { ...comment, replies: [...comment.replies, newReply] }
+        : comment.replies && comment.replies.length > 0
+        ? {
+            ...comment,
+            replies: recursiveAddReplies(comment.replies, idReplies, newReply),
+          }
+        : comment
+    );
+
+  const addReply = (item, idReplies) => {
+    setIdNew((idNumber) => {
+      const newReply = { ...item, id: idNumber + 1 };
+      setData({
+        ...Data,
+        comments: recursiveAddReplies(Data.comments, idReplies, newReply),
+      });
+      return idNumber + 1;
+    });
+  };
 
   // callback function to save text
   const addTextReply = (item, idReplies) => {
@@ -67,7 +89,7 @@ function App() {
       <div className="">
         <CommentsBox
           Data={Data}
-          addReply={addTextReply}
+          addReply={addReply}
           saveCommentsText={addCommentsText}
         />
       </div>
