@@ -20,6 +20,8 @@ function App() {
     // add id to new reply
     setIdNew((idNo) => {
       const newReply = { ...item, id: idNo + 1 };
+      //iterate comments to find the matching id to reply
+      // should insert recursive inside to iterate all comments and replies.
       setData({
         ...Data,
         comments: Data.comments.map((reply, index) =>
