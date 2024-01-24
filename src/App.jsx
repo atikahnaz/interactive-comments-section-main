@@ -14,18 +14,12 @@ function App() {
   const recursiveAddReplies = (comments, idReplies, newReply) =>
     comments.map((comment, index) =>
       comment.id === idReplies
-        ? { ...comment, replies: [...comment.replies, newReply] }
+        ? { ...comment, replies: [...(comment.replies || []), newReply] }
         : comment.replies && comment.replies.length > 0
-        ? [
-            {
-              ...comment.replies,
-              replies: recursiveAddReplies(
-                comment.replies,
-                idReplies,
-                newReply
-              ),
-            },
-          ]
+        ? {
+            ...comment,
+            replies: recursiveAddReplies(comment.replies, idReplies, newReply),
+          }
         : comment
     );
 
@@ -94,7 +88,7 @@ function App() {
       <div className="">
         <CommentsBox
           Data={Data}
-          addReply={addTextReply}
+          addReply={addReply}
           saveCommentsText={addCommentsText}
         />
       </div>
