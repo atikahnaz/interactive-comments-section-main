@@ -5,6 +5,7 @@ export default function Reply({
   usernameName,
   idToReply,
   textReply,
+  closeReplyBox,
 }) {
   const [reply, setReply] = useState("@" + usernameName);
   const [replyText, setReplyText] = useState("");
@@ -12,7 +13,7 @@ export default function Reply({
   const [replyData, setReplyData] = useState({
     id: null,
     content: replyText,
-    createdAt: "maybe now",
+    createdAt: "Today",
     score: 0,
     replyingTo: usernameName,
     user: {
@@ -35,11 +36,12 @@ export default function Reply({
     textReply(replyData, idToReply);
     setReplyData({ ...replyData, content: "" });
     setShowReply(false);
+    closeReplyBox();
   };
 
   return (
     <>
-      {showReply && (
+      {showReply ? (
         <div className=" bg-fe-white mb-4 p-4 rounded-lg font-feRubik">
           <input
             type="text"
@@ -59,6 +61,8 @@ export default function Reply({
             </div>
           </div>
         </div>
+      ) : (
+        ""
       )}
     </>
   );
