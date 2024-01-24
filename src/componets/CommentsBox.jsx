@@ -8,17 +8,18 @@ import IconDelete from "../assets/images/icon-delete.svg";
 import IconEdit from "../assets/images/icon-edit.svg";
 
 export default function CommentsBox({ Data, addReply, saveCommentsText }) {
-  const [showReplyBox, setShowReplyBox] = useState(null);
+  const [showReplyBox, setShowReplyBox] = useState(false);
   const [idReplies, setIdReplies] = useState(null);
   const [showReplyBoxIdBased, setShowReplyBoxIdBased] = useState(null);
 
-  const ReplyBox = (index) => {
-    setShowReplyBox(index);
+  const closeReplyBox = () => {
     console.log("fefefe");
+    setShowReplyBox(false);
   };
 
   const ReplyBoxId = (idNumber) => {
     setShowReplyBoxIdBased(idNumber);
+    setShowReplyBox(true);
     console.log("frf");
     console.log(idNumber);
   };
@@ -30,9 +31,7 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
         {data.map((reply, key) => (
           <div className=" bg-fe-white mb-4 p-4 rounded-lg">
             {/**profile */}
-            {reply.replies && (
-              <RecursiveShowReplies data={reply.replies} idToReply={reply.id} />
-            )}
+
             {console.log("id to reply inside" + idToReply)}
             <div className="flex items-center mb-4">
               <div className="pr-5">
@@ -97,15 +96,20 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
             </div>
 
             {/**reply box */}
-            {showReplyBoxIdBased === reply.id ? (
+
+            {showReplyBoxIdBased === reply.id && showReplyBox == true ? (
               <Reply
                 currentUser={Data.currentUser}
                 usernameName={reply.user.username}
                 idToReply={reply.id}
                 textReply={addReply}
+                closeReplyBox={closeReplyBox}
               />
             ) : (
               ""
+            )}
+            {reply.replies && (
+              <RecursiveShowReplies data={reply.replies} idToReply={reply.id} />
             )}
           </div>
         ))}
@@ -191,7 +195,7 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
                       />
                       <div
                         className="font-medium"
-                        onClick={() => ReplyBox(index)}
+                        onClick={() => ReplyBoxId(item.id)}
                       >
                         Reply
                       </div>
@@ -201,7 +205,8 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
               </div>
 
               {/**reply box */}
-              {showReplyBox === index ? (
+
+              {showReplyBoxIdBased === item.id ? (
                 <Reply
                   currentUser={Data.currentUser}
                   usernameName={item.user.username}
@@ -219,11 +224,11 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
               <div>
                 {/**<RecursiveShowReplies data={item.replies} />*/}
                 <RecursiveShowReplies data={item.replies} idToReply={item.id} />
-                <div>non recursive</div>
+                {/**  <div>non recursive</div>
                 <div className="ml-4 border-l-2 pl-4 border-fe-light-gray">
                   {item.replies.map((reply, key) => (
                     <div className=" bg-fe-white mb-4 p-4 rounded-lg">
-                      {/**profile */}
+                      
                       <div className="flex items-center mb-4">
                         <div className="pr-5">
                           <img
@@ -236,7 +241,7 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
                           {reply.user.username}
                         </div>
 
-                        {/**current user */}
+                       
                         {reply.user.username == Data.currentUser.username ? (
                           <div className="mr-5 px-1 text-xs  bg-fe-moderate-blue text-fe-white">
                             you
@@ -249,12 +254,12 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
                           {reply.createdAt}
                         </div>
                       </div>
-                      {/**replies content */}
+                      
                       <div>{reply.replyingTo}</div>
                       <div className=" text-fe-grayish-Blue text-base mb-4">
                         {reply.content}
                       </div>
-                      {/**score and reply button */}
+                      
                       <div className="flex justify-between">
                         <div className="flex bg-fe-light-gray items-center rounded-lg">
                           <img
@@ -304,7 +309,7 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
                         )}
                       </div>
 
-                      {/**reply box */}
+                      
                       {showReplyBoxIdBased === reply.id ? (
                         <Reply
                           currentUser={Data.currentUser}
@@ -317,7 +322,7 @@ export default function CommentsBox({ Data, addReply, saveCommentsText }) {
                       )}
                     </div>
                   ))}
-                </div>
+                </div> */}
               </div>
             )}
           </>
