@@ -6,7 +6,7 @@ export default function WriteComment({ currentUser, saveComments }) {
   const [commentData, setCommentData] = useState({
     id: null,
     content: commentText,
-    createdAt: "not sure",
+    createdAt: "Today",
     score: 0,
     user: {
       image: {
