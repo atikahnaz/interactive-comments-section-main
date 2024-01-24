@@ -80,6 +80,15 @@ function App() {
     });
   };
 
+  const deleteComment = (id) => {
+    console.log("delete");
+    const updatedComments = Data.comments.filter(
+      (comment) => comment.id !== id
+    );
+    console.log(updatedComments);
+    setData({ ...Data, comments: updatedComments });
+  };
+
   useEffect(() => {
     console.log(Data);
   }, [Data]);
@@ -90,6 +99,7 @@ function App() {
           Data={Data}
           addReply={addReply}
           saveCommentsText={addCommentsText}
+          deletePostFromParent={deleteComment}
         />
       </div>
     </>
