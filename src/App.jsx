@@ -82,11 +82,11 @@ function App() {
 
   const deleteComment = (id) => {
     console.log("delete");
-    const updatedComments = Data.comments.filter(
-      (comment) => comment.id !== id
-    );
-    console.log(updatedComments);
-    setData({ ...Data, comments: updatedComments });
+    //const updatedComments = Data.comments.filter(
+    //  (comment) => comment.id !== id
+    //);
+    //console.log(updatedComments);
+    //setData({ ...Data, comments: updatedComments });
   };
 
   useEffect(() => {

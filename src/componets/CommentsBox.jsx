@@ -6,6 +6,7 @@ import WriteComment from "./WriteComment";
 import Reply from "./Reply";
 import IconDelete from "../assets/images/icon-delete.svg";
 import IconEdit from "../assets/images/icon-edit.svg";
+import Delete from "./Delete";
 
 export default function CommentsBox({
   Data,
@@ -14,8 +15,9 @@ export default function CommentsBox({
   deletePostFromParent,
 }) {
   const [showReplyBox, setShowReplyBox] = useState(false);
-  const [idReplies, setIdReplies] = useState(null);
+  // const [idReplies, setIdReplies] = useState(null);
   const [showReplyBoxIdBased, setShowReplyBoxIdBased] = useState(null);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const closeReplyBox = () => {
     console.log("fefefe");
@@ -124,7 +126,10 @@ export default function CommentsBox({
 
   const deletePost = (id) => {
     console.log("delete");
-    deletePostFromParent(id);
+    setShowDeletePopup(true);
+    //deletePostFromParent(id);
+
+    //return <div>{showDeletePopup && <Delete />}</div>;
   };
 
   return (
@@ -246,6 +251,7 @@ export default function CommentsBox({
         currentUser={Data.currentUser}
         saveComments={saveCommentsText}
       />
+      {showDeletePopup && <Delete />}
     </>
   );
 }
