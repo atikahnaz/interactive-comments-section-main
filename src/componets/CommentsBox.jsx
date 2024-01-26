@@ -18,6 +18,7 @@ export default function CommentsBox({
   // const [idReplies, setIdReplies] = useState(null);
   const [showReplyBoxIdBased, setShowReplyBoxIdBased] = useState(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [idToDelete, setIdToDelete] = useState(null);
 
   const closeReplyBox = () => {
     console.log("fefefe");
@@ -81,7 +82,10 @@ export default function CommentsBox({
                   <div className="mr-2">
                     <img src={IconDelete} alt="" />
                   </div>
-                  <div className="font-medium text-fe-soft-red mr-3 ">
+                  <div
+                    className="font-medium text-fe-soft-red mr-3 "
+                    onClick={() => deletePost(reply.id)}
+                  >
                     Delete
                   </div>
                   <div className="mr-2">
@@ -127,11 +131,20 @@ export default function CommentsBox({
   const deletePost = (id) => {
     console.log("delete");
     setShowDeletePopup(true);
+    setIdToDelete(id);
     //deletePostFromParent(id);
 
     //return <div>{showDeletePopup && <Delete />}</div>;
   };
 
+  const idToDeleteComment = (id) => {
+    deletePostFromParent(id);
+    setShowDeletePopup(false);
+  };
+
+  const cancelDelete = () => {
+    setShowDeletePopup(false);
+  };
   return (
     <>
       <div className=" font-feRubik">
@@ -251,7 +264,13 @@ export default function CommentsBox({
         currentUser={Data.currentUser}
         saveComments={saveCommentsText}
       />
-      {showDeletePopup && <Delete />}
+      {showDeletePopup && (
+        <Delete
+          id={idToDelete}
+          idComment={idToDeleteComment}
+          cancelDelete={cancelDelete}
+        />
+      )}
     </>
   );
 }

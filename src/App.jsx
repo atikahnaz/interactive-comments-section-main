@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import CommentsBox from "./componets/CommentsBox";
 import CommentsData from "../data.json";
+import { comment } from "postcss";
 
 function App() {
   const [Data, setData] = useState(CommentsData);
@@ -21,15 +22,16 @@ function App() {
         : comment
     );
 
-  const recursiveDeleteReplies = (id) => {};
-  // map array of comments
-  // if comments.replies.length > 0
-  // use recursive to loop
-  // find the matching id
-  // if id matched delete the id and content
-  // else if comments.replies == 0
-  // check if comment.id match with id
-  // // if id matched delete the id and content
+  const recursiveDeleteReplies = (id) => {
+    // map array of comments
+    // if comments.replies.length > 0
+    // use recursive to loop
+    // find the matching id
+    // if id matched delete the id and content
+    // else if comments.replies == 0
+    // check if comment.id match with id
+    // // if id matched delete the id and content
+  };
 
   const addReply = (item, idReplies) => {
     setIdNew((idNumber) => {
