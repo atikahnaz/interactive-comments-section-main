@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import CommentsBox from "./componets/CommentsBox";
 import CommentsData from "../data.json";
@@ -23,6 +21,16 @@ function App() {
         : comment
     );
 
+  const recursiveDeleteReplies = (id) => {};
+  // map array of comments
+  // if comments.replies.length > 0
+  // use recursive to loop
+  // find the matching id
+  // if id matched delete the id and content
+  // else if comments.replies == 0
+  // check if comment.id match with id
+  // // if id matched delete the id and content
+
   const addReply = (item, idReplies) => {
     setIdNew((idNumber) => {
       const newReply = { ...item, id: idNumber + 1 };
@@ -32,6 +40,20 @@ function App() {
       });
       return idNumber + 1;
     });
+  };
+
+  const testDelete = (id) => {
+    setData({ ...Data, comments: recursiveDeleteReplies(id) });
+  };
+
+  const deleteComment = (id) => {
+    console.log("delete");
+
+    const updatedComments = Data.comments.filter(
+      (comment) => comment.id !== id
+    );
+
+    setData({ ...Data, comments: updatedComments });
   };
 
   // callback function to save text
@@ -52,16 +74,6 @@ function App() {
         ),
       });
 
-      // find the id, and index at Data
-      //setData({ ...Data, comments: [...Data.comments[0].replies, newReply] });
-      /*Data.comments.map((comment, index) => {
-        comment.id === 1 &&
-          setData({
-            ...comment,
-            comments: [...comment.replies, newReply],
-          });
-        console.log("id replyyy " + comment.id);
-      });*/
       return idNo + 1;
     });
   };
@@ -80,21 +92,12 @@ function App() {
     });
   };
 
-  const deleteComment = (id) => {
-    console.log("delete");
-    //const updatedComments = Data.comments.filter(
-    //  (comment) => comment.id !== id
-    //);
-    //console.log(updatedComments);
-    //setData({ ...Data, comments: updatedComments });
-  };
-
   useEffect(() => {
     console.log(Data);
   }, [Data]);
   return (
     <>
-      <div className="">
+      <div className=" font-feRubik">
         <CommentsBox
           Data={Data}
           addReply={addReply}
