@@ -22,7 +22,16 @@ function App() {
         : comment
     );
 
-  const recursiveDeleteReplies = (id) => {
+  const deleteReplies = (comments, id) => {
+    return comments.filter((comment) => {
+      if (comment.replies && comment.replies.length > 0) {
+        if (comment.replies.id === id) {
+        }
+      }
+    });
+  };
+
+  const testrecursiveDeleteReplies = (id) => {
     // map array of comments
     // if comments.replies.length > 0
     // use recursive to loop
@@ -34,6 +43,8 @@ function App() {
 
     console.log("testfing deletedd");
     const updatedComments = Data.comments.filter((comment) => {
+      // this line works
+
       if (comment.id !== id) {
         console.log("first comment");
         return true;
@@ -45,6 +56,9 @@ function App() {
         return true;
       }
     });
+
+    // till this line
+
     //   if (comment.id !== id) {
     //     console.log(comment);
     //     return true;
@@ -69,7 +83,7 @@ function App() {
   };
 
   const testDelete = (id) => {
-    setData({ ...Data, comments: recursiveDeleteReplies(id) });
+    setData({ ...Data, comments: deleteReplies(Data.comments, id) });
   };
 
   const deleteComment = (id) => {
