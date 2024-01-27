@@ -31,6 +31,30 @@ function App() {
     // else if comments.replies == 0
     // check if comment.id match with id
     // // if id matched delete the id and content
+
+    console.log("testfing deletedd");
+    const updatedComments = Data.comments.filter((comment) => {
+      if (comment.id !== id) {
+        console.log("first comment");
+        return true;
+      }
+      if (comment.replies && comment.replies.length > 0) {
+        console.log("relplies");
+        return false;
+      } else if (comment.id !== id) {
+        return true;
+      }
+    });
+    //   if (comment.id !== id) {
+    //     console.log(comment);
+    //     return true;
+    //   }
+    //   if (comment.replies && comment.replies.length > 0) {
+    //     console.log("hhhhhh" + comment);
+    //   }
+    // });
+    // console.log("udhy");
+    return updatedComments;
   };
 
   const addReply = (item, idReplies) => {
@@ -104,7 +128,7 @@ function App() {
           Data={Data}
           addReply={addReply}
           saveCommentsText={addCommentsText}
-          deletePostFromParent={deleteComment}
+          deletePostFromParent={testDelete}
         />
       </div>
     </>
