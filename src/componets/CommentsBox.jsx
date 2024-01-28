@@ -33,14 +33,12 @@ export default function CommentsBox({
   };
 
   const RecursiveShowReplies = ({ data, idToReply }) => {
-    console.log("id to reply" + idToReply);
     return (
       <div className="ml-4 border-l-2 pl-4 border-fe-light-gray">
-        {data.map((reply, key) => (
+        {data.map((reply) => (
           <div className=" bg-fe-white mb-4 p-4 rounded-lg">
             {/**profile */}
 
-            {console.log("id to reply inside" + idToReply)}
             <div className="flex items-center mb-4">
               <div className="pr-5">
                 <img className=" w-8 h-8" src={reply.user.image.png} alt="" />
@@ -148,7 +146,7 @@ export default function CommentsBox({
   return (
     <>
       <div className=" font-feRubik">
-        {Data.comments.map((item, index) => (
+        {Data.comments.map((item) => (
           <>
             {/**container comments and reply/send container */}
             <div>

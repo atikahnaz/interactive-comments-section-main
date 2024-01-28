@@ -8,8 +8,6 @@ function App() {
   const [Data, setData] = useState(CommentsData);
   const [idNew, setIdNew] = useState(4);
 
-  // recursive function to add replies
-
   const recursiveAddReplies = (comments, idReplies, newReply) =>
     comments.map((comment, index) =>
       comment.id === idReplies
@@ -22,53 +20,16 @@ function App() {
         : comment
     );
 
-  const deleteReplies = (comments, id) => {
+  const recursiveDeleteReplies = (comments, id) => {
     return comments.filter((comment) => {
-      if (comment.replies && comment.replies.length > 0) {
-        if (comment.replies.id === id) {
-        }
-      }
-    });
-  };
-
-  const testrecursiveDeleteReplies = (id) => {
-    // map array of comments
-    // if comments.replies.length > 0
-    // use recursive to loop
-    // find the matching id
-    // if id matched delete the id and content
-    // else if comments.replies == 0
-    // check if comment.id match with id
-    // // if id matched delete the id and content
-
-    console.log("testfing deletedd");
-    const updatedComments = Data.comments.filter((comment) => {
-      // this line works
-
-      if (comment.id !== id) {
-        console.log("first comment");
-        return true;
-      }
-      if (comment.replies && comment.replies.length > 0) {
-        console.log("relplies");
+      if (comment.id === id) {
         return false;
-      } else if (comment.id !== id) {
-        return true;
       }
+      if (comment.replies && comment.replies.length > 0) {
+        comment.replies = recursiveDeleteReplies(comment.replies, id);
+      }
+      return true;
     });
-
-    // till this line
-
-    //   if (comment.id !== id) {
-    //     console.log(comment);
-    //     return true;
-    //   }
-    //   if (comment.replies && comment.replies.length > 0) {
-    //     console.log("hhhhhh" + comment);
-    //   }
-    // });
-    // console.log("udhy");
-    return updatedComments;
   };
 
   const addReply = (item, idReplies) => {
@@ -82,51 +43,15 @@ function App() {
     });
   };
 
-  const testDelete = (id) => {
-    setData({ ...Data, comments: deleteReplies(Data.comments, id) });
-  };
-
-  const deleteComment = (id) => {
-    console.log("delete");
-
-    const updatedComments = Data.comments.filter(
-      (comment) => comment.id !== id
-    );
-
-    setData({ ...Data, comments: updatedComments });
-  };
-
-  // callback function to save text
-  const addTextReply = (item, idReplies) => {
-    console.log("hy");
-    console.log("id to reply" + idReplies);
-    // add id to new reply
-    setIdNew((idNo) => {
-      const newReply = { ...item, id: idNo + 1 };
-      //iterate comments to find the matching id to reply
-      // should insert recursive inside to iterate all comments and replies.
-      setData({
-        ...Data,
-        comments: Data.comments.map((reply, index) =>
-          reply.id === idReplies
-            ? { ...reply, replies: [...reply.replies, newReply] }
-            : reply
-        ),
-      });
-
-      return idNo + 1;
-    });
+  const deleteCommentsText = (id) => {
+    setData({ ...Data, comments: recursiveDeleteReplies(Data.comments, id) });
   };
 
   //callback function to save comments
   const addCommentsText = (item) => {
-    console.log("send comments");
-    console.log(item);
     // add id to comments
     setIdNew((idNo) => {
       const newComments = { ...item, id: idNo + 1 };
-      console.log(newComments);
-
       setData({ ...Data, comments: [...Data.comments, newComments] });
       return idNo + 1;
     });
@@ -142,7 +67,7 @@ function App() {
           Data={Data}
           addReply={addReply}
           saveCommentsText={addCommentsText}
-          deletePostFromParent={testDelete}
+          deletePostFromParent={deleteCommentsText}
         />
       </div>
     </>
