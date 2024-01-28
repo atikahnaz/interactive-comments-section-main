@@ -57,6 +57,18 @@ function App() {
     });
   };
 
+  const recursiveAddScore = (comments, id) =>
+    comments.map((comment) =>
+      comment.id === id
+        ? { ...comment, score: comment.score + 1 }
+        : comment.replies && comment.replies.length > 0
+        ? { ...comment, replies: recursiveAddScore(comment.replies, id) }
+        : comment
+    );
+
+  const plusScore = (id) => {
+    setData({ ...Data, comments: recursiveAddScore(Data.comments, id) });
+  };
   useEffect(() => {
     console.log(Data);
   }, [Data]);
@@ -68,6 +80,7 @@ function App() {
           addReply={addReply}
           saveCommentsText={addCommentsText}
           deletePostFromParent={deleteCommentsText}
+          plusScore={plusScore}
         />
       </div>
     </>

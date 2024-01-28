@@ -13,6 +13,7 @@ export default function CommentsBox({
   addReply,
   saveCommentsText,
   deletePostFromParent,
+  plusScore,
 }) {
   const [showReplyBox, setShowReplyBox] = useState(false);
   // const [idReplies, setIdReplies] = useState(null);
@@ -32,13 +33,20 @@ export default function CommentsBox({
     console.log(idNumber);
   };
 
-  const RecursiveShowReplies = ({ data, idToReply }) => {
+  const addScore = (id) => {
+    plusScore(id);
+  };
+  const addScoreReply = (id) => {
+    console.log("sfefff");
+    plusScore(id);
+  };
+
+  const RecursiveShowReplies = ({ data, idToReply, addScoreReply }) => {
     return (
       <div className="ml-4 border-l-2 pl-4 border-fe-light-gray">
         {data.map((reply) => (
           <div className=" bg-fe-white mb-4 p-4 rounded-lg">
             {/**profile */}
-
             <div className="flex items-center mb-4">
               <div className="pr-5">
                 <img className=" w-8 h-8" src={reply.user.image.png} alt="" />
@@ -68,7 +76,12 @@ export default function CommentsBox({
             {/**score and reply button */}
             <div className="flex justify-between">
               <div className="flex bg-fe-light-gray items-center rounded-lg">
-                <img className="object-contain p-2" src={IconPlus} alt="" />
+                <img
+                  className="object-contain p-2"
+                  src={IconPlus}
+                  alt=""
+                  onClick={() => addScoreReply(reply.id)}
+                />
                 <div className="p-2  text-fe-moderate-blue font-medium">
                   {reply.score}
                 </div>
@@ -118,7 +131,11 @@ export default function CommentsBox({
               ""
             )}
             {reply.replies && (
-              <RecursiveShowReplies data={reply.replies} idToReply={reply.id} />
+              <RecursiveShowReplies
+                data={reply.replies}
+                idToReply={reply.id}
+                addScore={addScore}
+              />
             )}
           </div>
         ))}
@@ -185,7 +202,12 @@ export default function CommentsBox({
                 <div className="flex justify-between">
                   {/**score */}
                   <div className="flex bg-fe-light-gray items-center rounded-lg">
-                    <img className="object-contain p-2" src={IconPlus} alt="" />
+                    <img
+                      className="object-contain p-2"
+                      src={IconPlus}
+                      alt=""
+                      onClick={() => addScore(item.id)}
+                    />
                     <div className="p-2  text-fe-moderate-blue font-medium">
                       {item.score}
                     </div>
@@ -252,7 +274,11 @@ export default function CommentsBox({
             ) : (
               <div>
                 {/**<RecursiveShowReplies data={item.replies} />*/}
-                <RecursiveShowReplies data={item.replies} idToReply={item.id} />
+                <RecursiveShowReplies
+                  data={item.replies}
+                  idToReply={item.id}
+                  addScoreReply={addScoreReply}
+                />
               </div>
             )}
           </>
