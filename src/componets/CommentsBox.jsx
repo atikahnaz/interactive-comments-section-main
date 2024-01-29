@@ -49,38 +49,107 @@ export default function CommentsBox({
     minusScore(id);
   };
 
+  const deletePost = (id) => {
+    console.log("delete");
+    console.log("id" + id);
+    setShowDeletePopup(true);
+    setIdToDelete(id);
+  };
+
+  const idToDeleteComment = (id) => {
+    deletePostFromParent(id);
+    setShowDeletePopup(false);
+  };
+
+  const cancelDelete = () => {
+    setShowDeletePopup(false);
+  };
+
+  const DeleteEdit = ({ id }) => {
+    return (
+      <>
+        <div className="flex items-center cursor-pointer">
+          <div className="mr-2">
+            <img src={IconDelete} alt="" />
+          </div>
+          <div
+            className="font-medium text-fe-soft-red mr-3 cursor-pointer"
+            onClick={() => deletePost(id)}
+          >
+            Delete
+          </div>
+          <div className="mr-2 cursor-pointer">
+            <img src={IconEdit} alt="" />
+          </div>
+          <div className="font-medium text-fe-moderate-blue">Edit</div>
+        </div>
+      </>
+    );
+  };
+
+  const ReplyIcon = ({ id }) => {
+    return (
+      <div className="flex items-center text-fe-moderate-blue ">
+        <img className="object-contain pr-2 " src={IconReply} alt="" />
+        <div
+          className="font-medium cursor-pointer"
+          onClick={() => ReplyBoxId(id)}
+        >
+          Reply
+        </div>
+      </div>
+    );
+  };
   const RecursiveShowReplies = ({ data, idToReply, addScoreReply }) => {
     return (
       <div className="ml-4 border-l-2 pl-4 border-fe-light-gray">
         {data.map((reply) => (
           <div className=" bg-fe-white mb-4 p-4 rounded-lg">
             {/**profile */}
-            <div className="flex items-center mb-4">
-              <div className="pr-5">
-                <img className=" w-8 h-8" src={reply.user.image.png} alt="" />
-              </div>
-              <div className="text-base pr-2 font-medium">
-                {reply.user.username}
-              </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center mb-4">
+                <div className="pr-5">
+                  <img className=" w-8 h-8" src={reply.user.image.png} alt="" />
+                </div>
+                <div className="text-base pr-2 font-medium">
+                  {reply.user.username}
+                </div>
 
-              {/**current user */}
+                {/**current user */}
+                {reply.user.username == Data.currentUser.username ? (
+                  <div className="mr-5 px-1 text-xs  bg-fe-moderate-blue text-fe-white">
+                    you
+                  </div>
+                ) : (
+                  ""
+                )}
+
+                <div className="text-base text-fe-grayish-Blue">
+                  {reply.createdAt}
+                </div>
+              </div>
               {reply.user.username == Data.currentUser.username ? (
-                <div className="mr-5 px-1 text-xs  bg-fe-moderate-blue text-fe-white">
-                  you
+                <div className="hidden md:flex mb-4">
+                  <DeleteEdit id={reply.id} />
                 </div>
               ) : (
-                ""
+                <div className="hidden md:flex mb-4">
+                  <ReplyIcon id={reply.id} />
+                </div>
               )}
-
-              <div className="text-base text-fe-grayish-Blue">
-                {reply.createdAt}
-              </div>
             </div>
             {/**replies content */}
-            <div>{reply.replyingTo}</div>
-            <div className=" text-fe-grayish-Blue text-base mb-4">
-              {reply.content}
-            </div>
+            {/* <div>{reply.replyingTo}</div> */}
+            {reply.user.username == Data.currentUser.username ? (
+              <textarea
+                value={"@" + reply.replyingTo + " " + reply.content}
+                className="w-full text-fe-grayish-Blue text-base"
+              />
+            ) : (
+              <div className=" text-fe-grayish-Blue text-base mb-4">
+                {"@" + reply.replyingTo + " " + reply.content}
+              </div>
+            )}
             {/**score and reply button */}
             <div className="flex justify-between">
               <div className="flex bg-fe-light-gray items-center rounded-lg">
@@ -102,40 +171,44 @@ export default function CommentsBox({
               </div>
 
               {reply.user.username == Data.currentUser.username ? (
-                <div className="flex items-center cursor-pointer">
-                  <div className="mr-2">
-                    <img src={IconDelete} alt="" />
-                  </div>
-                  <div
-                    className="font-medium text-fe-soft-red mr-3 cursor-pointer"
-                    onClick={() => deletePost(reply.id)}
-                  >
-                    Delete
-                  </div>
-                  <div className="mr-2 cursor-pointer">
-                    <img src={IconEdit} alt="" />
-                  </div>
-                  <div className="font-medium text-fe-moderate-blue">Edit</div>
+                // <div className="flex items-center cursor-pointer">
+                //   <div className="mr-2">
+                //     <img src={IconDelete} alt="" />
+                //   </div>
+                //   <div
+                //     className="font-medium text-fe-soft-red mr-3 cursor-pointer"
+                //     onClick={() => deletePost(reply.id)}
+                //   >
+                //     Delete
+                //   </div>
+                //   <div className="mr-2 cursor-pointer">
+                //     <img src={IconEdit} alt="" />
+                //   </div>
+                //   <div className="font-medium text-fe-moderate-blue">Edit</div>
+                // </div>
+                <div className="md:hidden">
+                  <DeleteEdit id={reply.id} />
                 </div>
               ) : (
-                <div className="flex items-center text-fe-moderate-blue">
-                  <img
-                    className="object-contain pr-2 "
-                    src={IconReply}
-                    alt=""
-                  />
-                  <div
-                    className="font-medium cursor-pointer"
-                    onClick={() => ReplyBoxId(reply.id)}
-                  >
-                    Reply
-                  </div>
+                // <div className="flex items-center text-fe-moderate-blue">
+                //   <img
+                //     className="object-contain pr-2 "
+                //     src={IconReply}
+                //     alt=""
+                //   />
+                //   <div
+                //     className="font-medium cursor-pointer"
+                //     onClick={() => ReplyBoxId(reply.id)}
+                //   >
+                //     Reply
+                //   </div>
+                // </div>
+                <div className="md:hidden">
+                  <ReplyIcon id={reply.id} />
                 </div>
               )}
             </div>
-
             {/**reply box */}
-
             {showReplyBoxIdBased === reply.id && showReplyBox == true ? (
               <Reply
                 currentUser={Data.currentUser}
@@ -160,20 +233,6 @@ export default function CommentsBox({
     );
   };
 
-  const deletePost = (id) => {
-    console.log("delete");
-    setShowDeletePopup(true);
-    setIdToDelete(id);
-  };
-
-  const idToDeleteComment = (id) => {
-    deletePostFromParent(id);
-    setShowDeletePopup(false);
-  };
-
-  const cancelDelete = () => {
-    setShowDeletePopup(false);
-  };
   return (
     <>
       <div className=" font-feRubik">
@@ -184,33 +243,62 @@ export default function CommentsBox({
               {/**container comments */}
               <div className=" bg-fe-white mb-4 p-4 rounded-lg">
                 {/**Profile */}
-                <div className="flex items-center mb-4">
-                  <div className="pr-5">
-                    <img
-                      className=" w-8 h-8"
-                      src={item.user.image.png}
-                      alt=""
-                    />
-                  </div>
-                  <div className="text-base pr-5 font-medium">
-                    {item.user.username}
+                <div className="flex justify-between">
+                  <div className="flex items-center mb-4">
+                    <div className="pr-5">
+                      <img
+                        className=" w-8 h-8"
+                        src={item.user.image.png}
+                        alt=""
+                      />
+                    </div>
+                    <div className="text-base pr-5 font-medium">
+                      {item.user.username}
+                    </div>
+                    {Data.currentUser.username === item.user.username ? (
+                      <div className="mr-5 px-1 text-xs  bg-fe-moderate-blue text-fe-white">
+                        you
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <div className="text-base text-fe-grayish-Blue">
+                      {item.createdAt}
+                    </div>
                   </div>
                   {Data.currentUser.username === item.user.username ? (
-                    <div className="mr-5 px-1 text-xs  bg-fe-moderate-blue text-fe-white">
-                      you
+                    <div className="hidden md:flex items-center mb-4">
+                      <DeleteEdit id={item.id} />
                     </div>
                   ) : (
-                    ""
+                    <div className="hidden md:flex items-center mb-4">
+                      <ReplyIcon id={item.id} />
+                    </div>
                   )}
-                  <div className="text-base text-fe-grayish-Blue">
-                    {item.createdAt}
-                  </div>
                 </div>
 
+                {Data.currentUser.username === item.user.username ? (
+                  <textarea
+                    value={item.content}
+                    className="w-full text-fe-grayish-Blue text-base"
+                  />
+                ) : (
+                  <div className=" text-fe-grayish-Blue text-base mb-4">
+                    {item.content}
+                  </div>
+                )}
+
                 {/**Comments */}
-                <div className=" text-fe-grayish-Blue text-base mb-4">
+                {/* <div className=" text-fe-grayish-Blue text-base mb-4">
                   {item.content}
-                </div>
+                </div> */}
+
+                {/* {Data.currentUser.username === item.user.username && (
+                  <textarea
+                    value={item.content}
+                    className="w-full text-fe-grayish-Blue text-base"
+                  />
+                )} */}
 
                 {/**score and reply button */}
                 <div className="flex justify-between">
@@ -235,36 +323,42 @@ export default function CommentsBox({
                   {/**reply */}
 
                   {Data.currentUser.username === item.user.username ? (
-                    <div className="flex items-center cursor-pointer">
-                      <div className="mr-2">
-                        <img src={IconDelete} alt="" />
-                      </div>
-                      <div
-                        className="font-medium text-fe-soft-red mr-3"
-                        onClick={() => deletePost(item.id)}
-                      >
-                        Delete
-                      </div>
-                      <div className="mr-2">
-                        <img src={IconEdit} alt="" />
-                      </div>
-                      <div className="font-medium text-fe-moderate-blue">
-                        Edit
-                      </div>
+                    // <div className="flex items-center cursor-pointer">
+                    //   <div className="mr-2">
+                    //     <img src={IconDelete} alt="" />
+                    //   </div>
+                    //   <div
+                    //     className="font-medium text-fe-soft-red mr-3"
+                    //     onClick={() => deletePost(item.id)}
+                    //   >
+                    //     Delete
+                    //   </div>
+                    //   <div className="mr-2">
+                    //     <img src={IconEdit} alt="" />
+                    //   </div>
+                    //   <div className="font-medium text-fe-moderate-blue">
+                    //     Edit
+                    //   </div>
+                    // </div>
+                    <div className="md:hidden">
+                      <DeleteEdit id={item.id} />
                     </div>
                   ) : (
-                    <div className="flex items-center text-fe-moderate-blue ">
-                      <img
-                        className="object-contain pr-2 "
-                        src={IconReply}
-                        alt=""
-                      />
-                      <div
-                        className="font-medium cursor-pointer"
-                        onClick={() => ReplyBoxId(item.id)}
-                      >
-                        Reply
-                      </div>
+                    // <div className="flex items-center text-fe-moderate-blue ">
+                    //   <img
+                    //     className="object-contain pr-2 "
+                    //     src={IconReply}
+                    //     alt=""
+                    //   />
+                    //   <div
+                    //     className="font-medium cursor-pointer"
+                    //     onClick={() => ReplyBoxId(item.id)}
+                    //   >
+                    //     Reply
+                    //   </div>
+                    // </div>
+                    <div className="md:hidden">
+                      <ReplyIcon id={item.id} />
                     </div>
                   )}
                 </div>
