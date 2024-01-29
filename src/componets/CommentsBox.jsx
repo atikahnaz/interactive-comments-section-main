@@ -14,9 +14,9 @@ export default function CommentsBox({
   saveCommentsText,
   deletePostFromParent,
   plusScore,
+  minusScore,
 }) {
   const [showReplyBox, setShowReplyBox] = useState(false);
-  // const [idReplies, setIdReplies] = useState(null);
   const [showReplyBoxIdBased, setShowReplyBoxIdBased] = useState(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
@@ -39,6 +39,14 @@ export default function CommentsBox({
   const addScoreReply = (id) => {
     console.log("sfefff");
     plusScore(id);
+  };
+
+  const deleteScore = (id) => {
+    minusScore(id);
+  };
+
+  const deleteScoreReply = (id) => {
+    minusScore(id);
   };
 
   const RecursiveShowReplies = ({ data, idToReply, addScoreReply }) => {
@@ -77,7 +85,7 @@ export default function CommentsBox({
             <div className="flex justify-between">
               <div className="flex bg-fe-light-gray items-center rounded-lg">
                 <img
-                  className="object-contain p-2"
+                  className="object-contain p-2 cursor-pointer"
                   src={IconPlus}
                   alt=""
                   onClick={() => addScoreReply(reply.id)}
@@ -85,30 +93,39 @@ export default function CommentsBox({
                 <div className="p-2  text-fe-moderate-blue font-medium">
                   {reply.score}
                 </div>
-                <img className="object-contain p-2" src={IconMinus} alt="" />
+                <img
+                  className="object-contain p-2 cursor-pointer"
+                  src={IconMinus}
+                  alt=""
+                  onClick={() => deleteScoreReply(reply.id)}
+                />
               </div>
 
               {reply.user.username == Data.currentUser.username ? (
-                <div className="flex items-center ">
+                <div className="flex items-center cursor-pointer">
                   <div className="mr-2">
                     <img src={IconDelete} alt="" />
                   </div>
                   <div
-                    className="font-medium text-fe-soft-red mr-3 "
+                    className="font-medium text-fe-soft-red mr-3 cursor-pointer"
                     onClick={() => deletePost(reply.id)}
                   >
                     Delete
                   </div>
-                  <div className="mr-2">
+                  <div className="mr-2 cursor-pointer">
                     <img src={IconEdit} alt="" />
                   </div>
                   <div className="font-medium text-fe-moderate-blue">Edit</div>
                 </div>
               ) : (
                 <div className="flex items-center text-fe-moderate-blue">
-                  <img className="object-contain pr-2" src={IconReply} alt="" />
+                  <img
+                    className="object-contain pr-2 "
+                    src={IconReply}
+                    alt=""
+                  />
                   <div
-                    className="font-medium"
+                    className="font-medium cursor-pointer"
                     onClick={() => ReplyBoxId(reply.id)}
                   >
                     Reply
@@ -147,9 +164,6 @@ export default function CommentsBox({
     console.log("delete");
     setShowDeletePopup(true);
     setIdToDelete(id);
-    //deletePostFromParent(id);
-
-    //return <div>{showDeletePopup && <Delete />}</div>;
   };
 
   const idToDeleteComment = (id) => {
@@ -203,7 +217,7 @@ export default function CommentsBox({
                   {/**score */}
                   <div className="flex bg-fe-light-gray items-center rounded-lg">
                     <img
-                      className="object-contain p-2"
+                      className="object-contain p-2 cursor-pointer"
                       src={IconPlus}
                       alt=""
                       onClick={() => addScore(item.id)}
@@ -212,15 +226,16 @@ export default function CommentsBox({
                       {item.score}
                     </div>
                     <img
-                      className="object-contain p-2"
+                      className="object-contain p-2 cursor-pointer"
                       src={IconMinus}
                       alt=""
+                      onClick={() => deleteScore(item.id)}
                     />
                   </div>
                   {/**reply */}
 
                   {Data.currentUser.username === item.user.username ? (
-                    <div className="flex items-center ">
+                    <div className="flex items-center cursor-pointer">
                       <div className="mr-2">
                         <img src={IconDelete} alt="" />
                       </div>
@@ -238,14 +253,14 @@ export default function CommentsBox({
                       </div>
                     </div>
                   ) : (
-                    <div className="flex items-center text-fe-moderate-blue">
+                    <div className="flex items-center text-fe-moderate-blue ">
                       <img
-                        className="object-contain pr-2"
+                        className="object-contain pr-2 "
                         src={IconReply}
                         alt=""
                       />
                       <div
-                        className="font-medium"
+                        className="font-medium cursor-pointer"
                         onClick={() => ReplyBoxId(item.id)}
                       >
                         Reply

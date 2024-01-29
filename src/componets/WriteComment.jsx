@@ -25,8 +25,10 @@ export default function WriteComment({ currentUser, saveComments }) {
   // callback function to save comments
   const sendComments = () => {
     //setCommentData(updatedContent);
-    saveComments(commentData);
-    setCommentData({ ...commentData, content: "" });
+    if (commentData.content !== "") {
+      saveComments(commentData);
+      setCommentData({ ...commentData, content: "" });
+    }
   };
 
   return (
@@ -44,7 +46,7 @@ export default function WriteComment({ currentUser, saveComments }) {
             <img className="w-7 h-7" src={currentUser.image.png} alt="" />
           </div>
           <div
-            className="bg-fe-moderate-blue px-6 py-3 text-fe-white text-base rounded-lg font-medium"
+            className="bg-fe-moderate-blue px-6 py-3 text-fe-white text-base rounded-lg font-medium cursor-pointer"
             onClick={sendComments}
           >
             SEND

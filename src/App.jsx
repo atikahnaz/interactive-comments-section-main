@@ -8,28 +8,25 @@ function App() {
   const [Data, setData] = useState(CommentsData);
   const [idNew, setIdNew] = useState(4);
 
-  const recursiveAddReplies = (comments, idReplies, newReply) =>
-    comments.map((comment, index) =>
-      comment.id === idReplies
-        ? { ...comment, replies: [...(comment.replies || []), newReply] }
-        : comment.replies && comment.replies.length > 0
-        ? {
-            ...comment,
-            replies: recursiveAddReplies(comment.replies, idReplies, newReply),
-          }
-        : comment
-    );
-
-  const recursiveDeleteReplies = (comments, id) => {
-    return comments.filter((comment) => {
-      if (comment.id === id) {
-        return false;
-      }
-      if (comment.replies && comment.replies.length > 0) {
-        comment.replies = recursiveDeleteReplies(comment.replies, id);
-      }
-      return true;
-    });
+  const recursiveAddReplies = (comments, idReplies, newReply) => {
+    if (newReply.content !== "") {
+      return comments.map((comment, index) =>
+        comment.id === idReplies
+          ? { ...comment, replies: [...(comment.replies || []), newReply] }
+          : comment.replies && comment.replies.length > 0
+          ? {
+              ...comment,
+              replies: recursiveAddReplies(
+                comment.replies,
+                idReplies,
+                newReply
+              ),
+            }
+          : comment
+      );
+    } else {
+      return comments;
+    }
   };
 
   const addReply = (item, idReplies) => {
@@ -40,6 +37,18 @@ function App() {
         comments: recursiveAddReplies(Data.comments, idReplies, newReply),
       });
       return idNumber + 1;
+    });
+  };
+
+  const recursiveDeleteReplies = (comments, id) => {
+    return comments.filter((comment) => {
+      if (comment.id === id) {
+        return false;
+      }
+      if (comment.replies && comment.replies.length > 0) {
+        comment.replies = recursiveDeleteReplies(comment.replies, id);
+      }
+      return true;
     });
   };
 
@@ -66,8 +75,21 @@ function App() {
         : comment
     );
 
+  const recursiveDeleteScore = (comments, id) =>
+    comments.map((comment) =>
+      comment.id === id
+        ? { ...comment, score: comment.score - 1 }
+        : comment.replies && comment.replies.length > 0
+        ? { ...comment, replies: recursiveDeleteScore(comment.replies, id) }
+        : comment
+    );
+
   const plusScore = (id) => {
     setData({ ...Data, comments: recursiveAddScore(Data.comments, id) });
+  };
+
+  const minusScore = (id) => {
+    setData({ ...Data, comments: recursiveDeleteScore(Data.comments, id) });
   };
   useEffect(() => {
     console.log(Data);
@@ -81,6 +103,7 @@ function App() {
           saveCommentsText={addCommentsText}
           deletePostFromParent={deleteCommentsText}
           plusScore={plusScore}
+          minusScore={minusScore}
         />
       </div>
     </>
