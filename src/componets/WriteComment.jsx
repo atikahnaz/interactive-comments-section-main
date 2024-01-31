@@ -46,7 +46,7 @@ export default function WriteComment({ currentUser, saveComments }) {
             <img className="w-7 h-7" src={currentUser.image.png} alt="" />
           </div>
           <div
-            className="bg-fe-moderate-blue px-6 py-3 text-fe-white text-base rounded-lg font-medium cursor-pointer"
+            className="bg-fe-moderate-blue px-6 py-3 text-fe-white text-base rounded-lg font-medium cursor-pointer hover:opacity-50"
             onClick={sendComments}
           >
             SEND
