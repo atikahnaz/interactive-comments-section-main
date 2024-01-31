@@ -20,6 +20,8 @@ export default function CommentsBox({
   const [showReplyBoxIdBased, setShowReplyBoxIdBased] = useState(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
+  const [openEditText, setOpenEditText] = useState(false);
+  const [idToEdit, setIdToEdit] = useState(null);
 
   const closeReplyBox = () => {
     console.log("fefefe");
@@ -39,6 +41,26 @@ export default function CommentsBox({
   const addScoreReply = (id) => {
     console.log("sfefff");
     plusScore(id);
+  };
+
+  const ButtonPlusMinusScore = ({ id, score }) => {
+    return (
+      <div className="flex bg-fe-light-gray items-center rounded-lg lg:flex-col  lg:h-fit lg:justify-start lg:mr-3 lg:p-2">
+        <img
+          className="object-contain p-2 cursor-pointer "
+          src={IconPlus}
+          alt=""
+          onClick={() => addScore(id)}
+        />
+        <div className="p-2  text-fe-moderate-blue font-medium">{score}</div>
+        <img
+          className="object-contain p-2 cursor-pointer "
+          src={IconMinus}
+          alt=""
+          onClick={() => deleteScore(id)}
+        />
+      </div>
+    );
   };
 
   const deleteScore = (id) => {
@@ -65,6 +87,12 @@ export default function CommentsBox({
     setShowDeletePopup(false);
   };
 
+  const editText = (id) => {
+    console.log("grg");
+    setIdToEdit(id);
+    setOpenEditText(true);
+  };
+
   const DeleteEdit = ({ id }) => {
     return (
       <>
@@ -81,7 +109,12 @@ export default function CommentsBox({
           <div className="mr-2 cursor-pointer">
             <img src={IconEdit} alt="" />
           </div>
-          <div className="font-medium text-fe-moderate-blue">Edit</div>
+          <div
+            className="font-medium text-fe-moderate-blue"
+            onClick={() => editText(id)}
+          >
+            Edit
+          </div>
         </div>
       </>
     );
@@ -104,129 +137,108 @@ export default function CommentsBox({
     return (
       <div className="ml-4 border-l-2 pl-4 border-fe-light-gray">
         {data.map((reply) => (
-          <div className=" bg-fe-white mb-4 p-4 rounded-lg">
-            {/**profile */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center mb-4">
-                <div className="pr-5">
-                  <img className=" w-8 h-8" src={reply.user.image.png} alt="" />
-                </div>
-                <div className="text-base pr-2 font-medium">
-                  {reply.user.username}
-                </div>
+          <div className=" bg-fe-white mb-4 p-4 rounded-lg lg:flex">
+            <div className="hidden lg:flex">
+              <ButtonPlusMinusScore id={reply.id} score={reply.score} />
+            </div>
+            <div>
+              {/**profile */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center mb-4">
+                  <div className="pr-5">
+                    <img
+                      className=" w-8 h-8"
+                      src={reply.user.image.png}
+                      alt=""
+                    />
+                  </div>
+                  <div className="text-base pr-2 font-medium">
+                    {reply.user.username}
+                  </div>
 
-                {/**current user */}
+                  {/**current user */}
+                  {reply.user.username == Data.currentUser.username ? (
+                    <div className="mr-5 px-1 text-xs  bg-fe-moderate-blue text-fe-white">
+                      you
+                    </div>
+                  ) : (
+                    ""
+                  )}
+
+                  <div className="text-base text-fe-grayish-Blue">
+                    {reply.createdAt}
+                  </div>
+                </div>
                 {reply.user.username == Data.currentUser.username ? (
-                  <div className="mr-5 px-1 text-xs  bg-fe-moderate-blue text-fe-white">
-                    you
+                  <div className="hidden md:flex mb-4">
+                    <DeleteEdit id={reply.id} />
                   </div>
                 ) : (
-                  ""
+                  <div className="hidden md:flex mb-4">
+                    <ReplyIcon id={reply.id} />
+                  </div>
                 )}
-
-                <div className="text-base text-fe-grayish-Blue">
-                  {reply.createdAt}
-                </div>
               </div>
-              {reply.user.username == Data.currentUser.username ? (
-                <div className="hidden md:flex mb-4">
-                  <DeleteEdit id={reply.id} />
+              {/**replies content */}
+
+              {reply.id === idToEdit && openEditText ? (
+                <div className="flex-col justify-end">
+                  <textarea
+                    value={"@" + reply.replyingTo + " " + reply.content}
+                    className="w-full text-fe-grayish-Blue text-base p-2"
+                  />
+                  <div className="w-full">
+                    <button className="bg-fe-moderate-blue px-6 py-3 mb-3 text-fe-white text-base rounded-lg font-medium cursor-pointer">
+                      UPDATE
+                    </button>
+                  </div>
                 </div>
               ) : (
-                <div className="hidden md:flex mb-4">
-                  <ReplyIcon id={reply.id} />
+                <div className=" text-fe-grayish-Blue text-base mb-4">
+                  <span className=" text-fe-moderate-blue font-medium">
+                    {"@" + reply.replyingTo}
+                  </span>
+                  {" " + reply.content}
                 </div>
               )}
-            </div>
-            {/**replies content */}
-            {/* <div>{reply.replyingTo}</div> */}
-            {reply.user.username == Data.currentUser.username ? (
-              <textarea
-                value={"@" + reply.replyingTo + " " + reply.content}
-                className="w-full text-fe-grayish-Blue text-base"
-              />
-            ) : (
-              <div className=" text-fe-grayish-Blue text-base mb-4">
-                {"@" + reply.replyingTo + " " + reply.content}
-              </div>
-            )}
-            {/**score and reply button */}
-            <div className="flex justify-between">
-              <div className="flex bg-fe-light-gray items-center rounded-lg">
-                <img
-                  className="object-contain p-2 cursor-pointer"
-                  src={IconPlus}
-                  alt=""
-                  onClick={() => addScoreReply(reply.id)}
-                />
-                <div className="p-2  text-fe-moderate-blue font-medium">
-                  {reply.score}
+
+              {/**score and reply button */}
+              <div className="flex justify-between">
+                <div className="lg:hidden">
+                  <ButtonPlusMinusScore id={reply.id} score={reply.score} />
                 </div>
-                <img
-                  className="object-contain p-2 cursor-pointer"
-                  src={IconMinus}
-                  alt=""
-                  onClick={() => deleteScoreReply(reply.id)}
-                />
+
+                {reply.user.username == Data.currentUser.username ? (
+                  <div className="md:hidden">
+                    <DeleteEdit id={reply.id} />
+                  </div>
+                ) : (
+                  <div className="md:hidden">
+                    <ReplyIcon id={reply.id} />
+                  </div>
+                )}
               </div>
 
-              {reply.user.username == Data.currentUser.username ? (
-                // <div className="flex items-center cursor-pointer">
-                //   <div className="mr-2">
-                //     <img src={IconDelete} alt="" />
-                //   </div>
-                //   <div
-                //     className="font-medium text-fe-soft-red mr-3 cursor-pointer"
-                //     onClick={() => deletePost(reply.id)}
-                //   >
-                //     Delete
-                //   </div>
-                //   <div className="mr-2 cursor-pointer">
-                //     <img src={IconEdit} alt="" />
-                //   </div>
-                //   <div className="font-medium text-fe-moderate-blue">Edit</div>
-                // </div>
-                <div className="md:hidden">
-                  <DeleteEdit id={reply.id} />
-                </div>
+              {/**reply box */}
+              {showReplyBoxIdBased === reply.id && showReplyBox == true ? (
+                <Reply
+                  currentUser={Data.currentUser}
+                  usernameName={reply.user.username}
+                  idToReply={reply.id}
+                  textReply={addReply}
+                  closeReplyBox={closeReplyBox}
+                />
               ) : (
-                // <div className="flex items-center text-fe-moderate-blue">
-                //   <img
-                //     className="object-contain pr-2 "
-                //     src={IconReply}
-                //     alt=""
-                //   />
-                //   <div
-                //     className="font-medium cursor-pointer"
-                //     onClick={() => ReplyBoxId(reply.id)}
-                //   >
-                //     Reply
-                //   </div>
-                // </div>
-                <div className="md:hidden">
-                  <ReplyIcon id={reply.id} />
-                </div>
+                ""
+              )}
+              {reply.replies && (
+                <RecursiveShowReplies
+                  data={reply.replies}
+                  idToReply={reply.id}
+                  addScore={addScore}
+                />
               )}
             </div>
-            {/**reply box */}
-            {showReplyBoxIdBased === reply.id && showReplyBox == true ? (
-              <Reply
-                currentUser={Data.currentUser}
-                usernameName={reply.user.username}
-                idToReply={reply.id}
-                textReply={addReply}
-                closeReplyBox={closeReplyBox}
-              />
-            ) : (
-              ""
-            )}
-            {reply.replies && (
-              <RecursiveShowReplies
-                data={reply.replies}
-                idToReply={reply.id}
-                addScore={addScore}
-              />
-            )}
           </div>
         ))}
       </div>
@@ -241,126 +253,80 @@ export default function CommentsBox({
             {/**container comments and reply/send container */}
             <div>
               {/**container comments */}
-              <div className=" bg-fe-white mb-4 p-4 rounded-lg">
-                {/**Profile */}
-                <div className="flex justify-between">
-                  <div className="flex items-center mb-4">
-                    <div className="pr-5">
-                      <img
-                        className=" w-8 h-8"
-                        src={item.user.image.png}
-                        alt=""
-                      />
-                    </div>
-                    <div className="text-base pr-5 font-medium">
-                      {item.user.username}
-                    </div>
-                    {Data.currentUser.username === item.user.username ? (
-                      <div className="mr-5 px-1 text-xs  bg-fe-moderate-blue text-fe-white">
-                        you
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                    <div className="text-base text-fe-grayish-Blue">
-                      {item.createdAt}
-                    </div>
-                  </div>
-                  {Data.currentUser.username === item.user.username ? (
-                    <div className="hidden md:flex items-center mb-4">
-                      <DeleteEdit id={item.id} />
-                    </div>
-                  ) : (
-                    <div className="hidden md:flex items-center mb-4">
-                      <ReplyIcon id={item.id} />
-                    </div>
-                  )}
+              <div className=" bg-fe-white mb-4 p-4 rounded-lg lg:flex">
+                <div className="hidden lg:flex">
+                  <ButtonPlusMinusScore id={item.id} score={item.score} />
                 </div>
 
-                {Data.currentUser.username === item.user.username ? (
-                  <textarea
-                    value={item.content}
-                    className="w-full text-fe-grayish-Blue text-base"
-                  />
-                ) : (
-                  <div className=" text-fe-grayish-Blue text-base mb-4">
-                    {item.content}
-                  </div>
-                )}
-
-                {/**Comments */}
-                {/* <div className=" text-fe-grayish-Blue text-base mb-4">
-                  {item.content}
-                </div> */}
-
-                {/* {Data.currentUser.username === item.user.username && (
-                  <textarea
-                    value={item.content}
-                    className="w-full text-fe-grayish-Blue text-base"
-                  />
-                )} */}
-
-                {/**score and reply button */}
-                <div className="flex justify-between">
-                  {/**score */}
-                  <div className="flex bg-fe-light-gray items-center rounded-lg">
-                    <img
-                      className="object-contain p-2 cursor-pointer"
-                      src={IconPlus}
-                      alt=""
-                      onClick={() => addScore(item.id)}
-                    />
-                    <div className="p-2  text-fe-moderate-blue font-medium">
-                      {item.score}
+                <div>
+                  {/**Profile */}
+                  <div className="flex justify-between">
+                    <div className="flex items-center mb-4">
+                      <div className="pr-5">
+                        <img
+                          className=" w-8 h-8"
+                          src={item.user.image.png}
+                          alt=""
+                        />
+                      </div>
+                      <div className="text-base pr-5 font-medium">
+                        {item.user.username}
+                      </div>
+                      {Data.currentUser.username === item.user.username ? (
+                        <div className="mr-5 px-1 text-xs  bg-fe-moderate-blue text-fe-white">
+                          you
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      <div className="text-base text-fe-grayish-Blue">
+                        {item.createdAt}
+                      </div>
                     </div>
-                    <img
-                      className="object-contain p-2 cursor-pointer"
-                      src={IconMinus}
-                      alt=""
-                      onClick={() => deleteScore(item.id)}
-                    />
+                    {Data.currentUser.username === item.user.username ? (
+                      <div className="hidden md:flex items-center mb-4">
+                        <DeleteEdit id={item.id} />
+                      </div>
+                    ) : (
+                      <div className="hidden md:flex items-center mb-4">
+                        <ReplyIcon id={item.id} />
+                      </div>
+                    )}
                   </div>
-                  {/**reply */}
 
                   {Data.currentUser.username === item.user.username ? (
-                    // <div className="flex items-center cursor-pointer">
-                    //   <div className="mr-2">
-                    //     <img src={IconDelete} alt="" />
-                    //   </div>
-                    //   <div
-                    //     className="font-medium text-fe-soft-red mr-3"
-                    //     onClick={() => deletePost(item.id)}
-                    //   >
-                    //     Delete
-                    //   </div>
-                    //   <div className="mr-2">
-                    //     <img src={IconEdit} alt="" />
-                    //   </div>
-                    //   <div className="font-medium text-fe-moderate-blue">
-                    //     Edit
-                    //   </div>
-                    // </div>
-                    <div className="md:hidden">
-                      <DeleteEdit id={item.id} />
-                    </div>
+                    <textarea
+                      value={item.content}
+                      className="w-full text-fe-grayish-Blue text-base"
+                    />
                   ) : (
-                    // <div className="flex items-center text-fe-moderate-blue ">
-                    //   <img
-                    //     className="object-contain pr-2 "
-                    //     src={IconReply}
-                    //     alt=""
-                    //   />
-                    //   <div
-                    //     className="font-medium cursor-pointer"
-                    //     onClick={() => ReplyBoxId(item.id)}
-                    //   >
-                    //     Reply
-                    //   </div>
-                    // </div>
-                    <div className="md:hidden">
-                      <ReplyIcon id={item.id} />
+                    <div className=" text-fe-grayish-Blue text-base mb-4">
+                      {item.content}
                     </div>
                   )}
+
+                  {/**Comments */}
+
+                  {/**score and reply button */}
+                  <div className="flex justify-between">
+                    {/**score */}
+
+                    <div className="lg:hidden">
+                      <ButtonPlusMinusScore id={item.id} score={item.score} />
+                    </div>
+
+                    {/**reply */}
+
+                    {Data.currentUser.username === item.user.username ? (
+                      <div className="md:hidden">
+                        <DeleteEdit id={item.id} />
+                      </div>
+                    ) : (
+                      <div className="md:hidden">
+                        <ReplyIcon id={item.id} />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
