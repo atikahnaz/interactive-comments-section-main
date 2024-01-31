@@ -77,7 +77,7 @@ function App() {
 
   const recursiveDeleteScore = (comments, id) =>
     comments.map((comment) =>
-      comment.id === id
+      comment.id === id && comment.score > 0
         ? { ...comment, score: comment.score - 1 }
         : comment.replies && comment.replies.length > 0
         ? { ...comment, replies: recursiveDeleteScore(comment.replies, id) }
@@ -96,7 +96,7 @@ function App() {
   }, [Data]);
   return (
     <>
-      <div className="font-feRubik md:w-1/2 mx-auto">
+      <div className="font-feRubik lg:w-1/2 mx-auto">
         <CommentsBox
           Data={Data}
           addReply={addReply}
