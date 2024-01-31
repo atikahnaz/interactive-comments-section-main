@@ -47,7 +47,7 @@ export default function CommentsBox({
     return (
       <div className="flex bg-fe-light-gray items-center rounded-lg lg:flex-col  lg:h-fit lg:justify-start lg:mr-3 lg:p-2">
         <img
-          className="object-contain p-2 cursor-pointer "
+          className="object-contain p-2 cursor-pointer  "
           src={IconPlus}
           alt=""
           onClick={() => addScore(id)}
@@ -97,23 +97,27 @@ export default function CommentsBox({
     return (
       <>
         <div className="flex items-center cursor-pointer">
-          <div className="mr-2">
-            <img src={IconDelete} alt="" />
+          <div className="flex items-center hover:opacity-50">
+            <div className="mr-2">
+              <img src={IconDelete} alt="" />
+            </div>
+            <div
+              className="font-medium text-fe-soft-red mr-3 cursor-pointer"
+              onClick={() => deletePost(id)}
+            >
+              Delete
+            </div>
           </div>
-          <div
-            className="font-medium text-fe-soft-red mr-3 cursor-pointer"
-            onClick={() => deletePost(id)}
-          >
-            Delete
-          </div>
-          <div className="mr-2 cursor-pointer">
-            <img src={IconEdit} alt="" />
-          </div>
-          <div
-            className="font-medium text-fe-moderate-blue"
-            onClick={() => editText(id)}
-          >
-            Edit
+          <div className="flex items-center hover:opacity-50">
+            <div className="mr-2 cursor-pointer">
+              <img src={IconEdit} alt="" />
+            </div>
+            <div
+              className="font-medium text-fe-moderate-blue"
+              onClick={() => editText(id)}
+            >
+              Edit
+            </div>
           </div>
         </div>
       </>
@@ -122,10 +126,10 @@ export default function CommentsBox({
 
   const ReplyIcon = ({ id }) => {
     return (
-      <div className="flex items-center text-fe-moderate-blue ">
+      <div className="flex items-center text-fe-moderate-blue hover:opacity-50">
         <img className="object-contain pr-2 " src={IconReply} alt="" />
         <div
-          className="font-medium cursor-pointer"
+          className="font-medium cursor-pointer "
           onClick={() => ReplyBoxId(id)}
         >
           Reply
@@ -141,7 +145,7 @@ export default function CommentsBox({
             <div className="hidden lg:flex">
               <ButtonPlusMinusScore id={reply.id} score={reply.score} />
             </div>
-            <div>
+            <div className="w-full">
               {/**profile */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center mb-4">
@@ -188,7 +192,7 @@ export default function CommentsBox({
                     className="w-full text-fe-grayish-Blue text-base p-2"
                   />
                   <div className="w-full">
-                    <button className="bg-fe-moderate-blue px-6 py-3 mb-3 text-fe-white text-base rounded-lg font-medium cursor-pointer">
+                    <button className="bg-fe-moderate-blue px-6 py-3 mb-3 text-fe-white text-base rounded-lg font-medium cursor-pointer hover:opacity-50">
                       UPDATE
                     </button>
                   </div>
@@ -203,7 +207,7 @@ export default function CommentsBox({
               )}
 
               {/**score and reply button */}
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <div className="lg:hidden">
                   <ButtonPlusMinusScore id={reply.id} score={reply.score} />
                 </div>
@@ -258,7 +262,7 @@ export default function CommentsBox({
                   <ButtonPlusMinusScore id={item.id} score={item.score} />
                 </div>
 
-                <div>
+                <div className="w-full">
                   {/**Profile */}
                   <div className="flex justify-between">
                     <div className="flex items-center mb-4">
@@ -294,6 +298,7 @@ export default function CommentsBox({
                     )}
                   </div>
 
+                  {/** edit this line to show update button 
                   {Data.currentUser.username === item.user.username ? (
                     <textarea
                       value={item.content}
@@ -303,12 +308,30 @@ export default function CommentsBox({
                     <div className=" text-fe-grayish-Blue text-base mb-4">
                       {item.content}
                     </div>
+                  )}*/}
+
+                  {item.id === idToEdit && openEditText ? (
+                    <div className="flex-col justify-end">
+                      <textarea
+                        value={item.content}
+                        className="w-full text-fe-grayish-Blue text-base p-2"
+                      />
+                      <div className="w-full">
+                        <button className="bg-fe-moderate-blue px-6 py-3 mb-3 text-fe-white text-base rounded-lg font-medium cursor-pointer hover:opacity-50">
+                          UPDATE
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className=" text-fe-grayish-Blue text-base mb-4">
+                      {item.content}
+                    </div>
                   )}
 
                   {/**Comments */}
 
                   {/**score and reply button */}
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     {/**score */}
 
                     <div className="lg:hidden">
