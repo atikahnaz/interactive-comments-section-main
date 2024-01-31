@@ -96,7 +96,7 @@ function App() {
   }, [Data]);
   return (
     <>
-      <div className=" font-feRubik">
+      <div className="font-feRubik md:w-1/2 mx-auto">
         <CommentsBox
           Data={Data}
           addReply={addReply}
