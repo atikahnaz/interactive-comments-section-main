@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import IconReply from "../assets/images/icon-reply.svg";
 import IconPlus from "../assets/images/icon-plus.svg";
 import IconMinus from "../assets/images/icon-minus.svg";
@@ -22,6 +22,8 @@ export default function CommentsBox({
   const [idToDelete, setIdToDelete] = useState(null);
   const [openEditText, setOpenEditText] = useState(false);
   const [idToEdit, setIdToEdit] = useState(null);
+  const [textToEdit, setTextToEdit] = useState("hello");
+  const textAreaRef = useRef(null);
 
   const closeReplyBox = () => {
     console.log("fefefe");
@@ -39,7 +41,6 @@ export default function CommentsBox({
     plusScore(id);
   };
   const addScoreReply = (id) => {
-    console.log("sfefff");
     plusScore(id);
   };
 
@@ -87,13 +88,23 @@ export default function CommentsBox({
     setShowDeletePopup(false);
   };
 
-  const editText = (id) => {
-    console.log("grg");
+  const editText = (id, content) => {
+    if (textAreaRef.current) {
+      textAreaRef.current.focus();
+    } else {
+      console.log("gaol");
+    }
+    setTextToEdit(content);
     setIdToEdit(id);
     setOpenEditText(true);
   };
 
-  const DeleteEdit = ({ id }) => {
+  useEffect(() => {
+    console.log("chnagibfg");
+    console.log(textToEdit);
+  }, [textToEdit]);
+
+  const DeleteEdit = ({ id, content }) => {
     return (
       <>
         <div className="flex items-center cursor-pointer">
@@ -114,7 +125,12 @@ export default function CommentsBox({
             </div>
             <div
               className="font-medium text-fe-moderate-blue"
-              onClick={() => editText(id)}
+              onClick={() => {
+                console.log("Content:", content);
+                console.log("id number", id);
+
+                editText(id, content);
+              }}
             >
               Edit
             </div>
@@ -188,8 +204,10 @@ export default function CommentsBox({
               {reply.id === idToEdit && openEditText ? (
                 <div className="flex-col justify-end">
                   <textarea
+                    ref={textAreaRef}
                     value={"@" + reply.replyingTo + " " + reply.content}
-                    className="w-full text-fe-grayish-Blue text-base p-2"
+                    className="w-full  overflow-hidden resize-none text-fe-grayish-Blue text-base p-2"
+                    rows={4}
                   />
                   <div className="w-full">
                     <button className="bg-fe-moderate-blue px-6 py-3 mb-3 text-fe-white text-base rounded-lg font-medium cursor-pointer hover:opacity-50">
@@ -287,9 +305,10 @@ export default function CommentsBox({
                         {item.createdAt}
                       </div>
                     </div>
+                    {/**console.log(item.content)*/}
                     {Data.currentUser.username === item.user.username ? (
                       <div className="hidden md:flex items-center mb-4">
-                        <DeleteEdit id={item.id} />
+                        <DeleteEdit id={item.id} content={item.content} />
                       </div>
                     ) : (
                       <div className="hidden md:flex items-center mb-4">
@@ -313,8 +332,10 @@ export default function CommentsBox({
                   {item.id === idToEdit && openEditText ? (
                     <div className="flex-col justify-end">
                       <textarea
-                        value={item.content}
-                        className="w-full text-fe-grayish-Blue text-base p-2"
+                        ref={textAreaRef}
+                        value={textToEdit}
+                        onChange={(e) => setTextToEdit(e.target.value)}
+                        className="w-full text-fe-grayish-Blue text-base p-2 resize-none"
                       />
                       <div className="w-full">
                         <button className="bg-fe-moderate-blue px-6 py-3 mb-3 text-fe-white text-base rounded-lg font-medium cursor-pointer hover:opacity-50">
@@ -342,7 +363,7 @@ export default function CommentsBox({
 
                     {Data.currentUser.username === item.user.username ? (
                       <div className="md:hidden">
-                        <DeleteEdit id={item.id} />
+                        <DeleteEdit id={item.id} content={item.content} />
                       </div>
                     ) : (
                       <div className="md:hidden">
