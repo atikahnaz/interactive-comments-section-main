@@ -22,7 +22,8 @@ export default function CommentsBox({
   const [idToDelete, setIdToDelete] = useState(null);
   const [openEditText, setOpenEditText] = useState(false);
   const [idToEdit, setIdToEdit] = useState(null);
-  const [textToEdit, setTextToEdit] = useState("hello");
+  const [textToEdit, setTextToEdit] = useState("");
+
   const textAreaRef = useRef(null);
 
   const closeReplyBox = () => {
@@ -89,11 +90,12 @@ export default function CommentsBox({
   };
 
   const editText = (id, content) => {
-    if (textAreaRef.current) {
-      textAreaRef.current.focus();
-    } else {
-      console.log("gaol");
-    }
+    // if (textAreaRef.current) {
+    //   textAreaRef.current.focus();
+    // } else {
+    console.log("gaol");
+    console.log(content);
+    // }
     setTextToEdit(content);
     setIdToEdit(id);
     setOpenEditText(true);
@@ -105,6 +107,7 @@ export default function CommentsBox({
   }, [textToEdit]);
 
   const DeleteEdit = ({ id, content }) => {
+    console.log("content rpelise", content);
     return (
       <>
         <div className="flex items-center cursor-pointer">
@@ -126,10 +129,8 @@ export default function CommentsBox({
             <div
               className="font-medium text-fe-moderate-blue"
               onClick={() => {
-                console.log("Content:", content);
-                console.log("id number", id);
-
                 editText(id, content);
+                //console.log(textAreaRef.current.focus);
               }}
             >
               Edit
@@ -154,6 +155,8 @@ export default function CommentsBox({
     );
   };
   const RecursiveShowReplies = ({ data, idToReply, addScoreReply }) => {
+    const [textToEditReply, setTextToEditReply] = useState(textToEdit);
+
     return (
       <div className="ml-4 border-l-2 pl-4 border-fe-light-gray">
         {data.map((reply) => (
@@ -191,7 +194,7 @@ export default function CommentsBox({
                 </div>
                 {reply.user.username == Data.currentUser.username ? (
                   <div className="hidden md:flex mb-4">
-                    <DeleteEdit id={reply.id} />
+                    <DeleteEdit id={reply.id} content={reply.content} />
                   </div>
                 ) : (
                   <div className="hidden md:flex mb-4">
@@ -205,7 +208,8 @@ export default function CommentsBox({
                 <div className="flex-col justify-end">
                   <textarea
                     ref={textAreaRef}
-                    value={"@" + reply.replyingTo + " " + reply.content}
+                    value={textToEditReply}
+                    onChange={(e) => setTextToEditReply(e.target.value)}
                     className="w-full  overflow-hidden resize-none text-fe-grayish-Blue text-base p-2"
                     rows={4}
                   />
@@ -232,7 +236,7 @@ export default function CommentsBox({
 
                 {reply.user.username == Data.currentUser.username ? (
                   <div className="md:hidden">
-                    <DeleteEdit id={reply.id} />
+                    <DeleteEdit id={reply.id} content={reply.content} />
                   </div>
                 ) : (
                   <div className="md:hidden">
@@ -332,7 +336,6 @@ export default function CommentsBox({
                   {item.id === idToEdit && openEditText ? (
                     <div className="flex-col justify-end">
                       <textarea
-                        ref={textAreaRef}
                         value={textToEdit}
                         onChange={(e) => setTextToEdit(e.target.value)}
                         className="w-full text-fe-grayish-Blue text-base p-2 resize-none"
@@ -397,6 +400,7 @@ export default function CommentsBox({
                   data={item.replies}
                   idToReply={item.id}
                   addScoreReply={addScoreReply}
+                  closeReplyBox={closeReplyBox}
                 />
               </div>
             )}
