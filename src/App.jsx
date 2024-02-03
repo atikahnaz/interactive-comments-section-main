@@ -66,6 +66,13 @@ function App() {
     });
   };
 
+  const saveUpdatedTextComment = (text, id) => {
+    console.log(text, id);
+    Data.comments.map((comment, index) => {
+      comment.id === id;
+    });
+  };
+
   const recursiveAddScore = (comments, id) =>
     comments.map((comment) =>
       comment.id === id
@@ -104,6 +111,7 @@ function App() {
           deletePostFromParent={deleteCommentsText}
           plusScore={plusScore}
           minusScore={minusScore}
+          saveUpdatedTextComment={saveUpdatedTextComment}
         />
       </div>
     </>

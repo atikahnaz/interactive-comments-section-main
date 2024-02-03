@@ -15,6 +15,7 @@ export default function CommentsBox({
   deletePostFromParent,
   plusScore,
   minusScore,
+  saveUpdatedTextComment,
 }) {
   const [showReplyBox, setShowReplyBox] = useState(false);
   const [showReplyBoxIdBased, setShowReplyBoxIdBased] = useState(null);
@@ -139,6 +140,11 @@ export default function CommentsBox({
         </div>
       </>
     );
+  };
+
+  const saveUpdatedText = () => {
+    console.log(textToEdit, idToEdit);
+    saveUpdatedTextComment(textToEdit, idToEdit);
   };
 
   const ReplyIcon = ({ id }) => {
@@ -341,7 +347,10 @@ export default function CommentsBox({
                         className="w-full text-fe-grayish-Blue text-base p-2 resize-none"
                       />
                       <div className="w-full">
-                        <button className="bg-fe-moderate-blue px-6 py-3 mb-3 text-fe-white text-base rounded-lg font-medium cursor-pointer hover:opacity-50">
+                        <button
+                          className="bg-fe-moderate-blue px-6 py-3 mb-3 text-fe-white text-base rounded-lg font-medium cursor-pointer hover:opacity-50"
+                          onClick={saveUpdatedText}
+                        >
                           UPDATE
                         </button>
                       </div>
