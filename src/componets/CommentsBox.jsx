@@ -145,6 +145,7 @@ export default function CommentsBox({
   const saveUpdatedText = () => {
     console.log(textToEdit, idToEdit);
     saveUpdatedTextComment(textToEdit, idToEdit);
+    setOpenEditText(false);
   };
 
   const ReplyIcon = ({ id }) => {

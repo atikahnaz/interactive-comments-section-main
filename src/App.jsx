@@ -68,9 +68,11 @@ function App() {
 
   const saveUpdatedTextComment = (text, id) => {
     console.log(text, id);
-    Data.comments.map((comment, index) => {
-      comment.id === id;
-    });
+    const updatedComments = Data.comments.map((comment) =>
+      comment.id === id ? { ...comment, content: text } : comment
+    );
+    console.log(updatedComments);
+    setData({ ...Data, comments: updatedComments });
   };
 
   const recursiveAddScore = (comments, id) =>
