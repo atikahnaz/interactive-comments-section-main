@@ -142,9 +142,9 @@ export default function CommentsBox({
     );
   };
 
-  const saveUpdatedText = () => {
+  const saveUpdatedText = (text, id) => {
     console.log(textToEdit, idToEdit);
-    saveUpdatedTextComment(textToEdit, idToEdit);
+    saveUpdatedTextComment(text, id);
     setOpenEditText(false);
   };
 
@@ -223,7 +223,7 @@ export default function CommentsBox({
                   <div className="w-full">
                     <button
                       className="bg-fe-moderate-blue px-6 py-3 mb-3 text-fe-white text-base rounded-lg font-medium cursor-pointer hover:opacity-50"
-                      onClick={saveUpdatedText}
+                      onClick={() => saveUpdatedText(textToEditReply, idToEdit)}
                     >
                       UPDATE
                     </button>
@@ -353,7 +353,7 @@ export default function CommentsBox({
                       <div className="w-full">
                         <button
                           className="bg-fe-moderate-blue px-6 py-3 mb-3 text-fe-white text-base rounded-lg font-medium cursor-pointer hover:opacity-50"
-                          onClick={saveUpdatedText}
+                          onClick={() => saveUpdatedText(textToEdit, idToEdit)}
                         >
                           UPDATE
                         </button>
