@@ -66,43 +66,62 @@ function App() {
     });
   };
 
-  const saveUpdatedTextComment = (text, id) => {
-    console.log(text, id);
-    const updatedComments = Data.comments.map((comment) =>
-      comment.id === id ? { ...comment, content: text } : comment
-    );
-    console.log(updatedComments);
-    setData({ ...Data, comments: updatedComments });
-  };
-
-  const recursiveAddScore = (comments, id) =>
+  const recursiveSaveUpdatedText = (comments, text, id) =>
     comments.map((comment) =>
       comment.id === id
-        ? { ...comment, score: comment.score + 1 }
+        ? { ...comment, content: text }
         : comment.replies && comment.replies.length > 0
-        ? { ...comment, replies: recursiveAddScore(comment.replies, id) }
+        ? {
+            ...comment,
+            replies: recursiveSaveUpdatedText(comment.replies, text, id),
+          }
         : comment
     );
 
-  const recursiveDeleteScore = (comments, id) =>
-    comments.map((comment) =>
-      comment.id === id && comment.score > 0
-        ? { ...comment, score: comment.score - 1 }
-        : comment.replies && comment.replies.length > 0
-        ? { ...comment, replies: recursiveDeleteScore(comment.replies, id) }
-        : comment
-    );
+  const saveUpdatedTextComment = (text, id) => {
+    console.log(text, id);
+    //console.log(updatedComments);
+
+    console.log("rrrrrrrrrrrrrrrrrr");
+    setData({
+      ...Data,
+      comments: recursiveSaveUpdatedText(Data.comments, text, id),
+    });
+
+    // const updatedComments = Data.comments.map((comment) =>
+    //   comment.id === id ? { ...comment, content: text } : comment
+    // );
+    // setData({ ...Data, comments: updatedComments });
+  };
 
   const plusScore = (id) => {
+    const recursiveAddScore = (comments, id) =>
+      comments.map((comment) =>
+        comment.id === id
+          ? { ...comment, score: comment.score + 1 }
+          : comment.replies && comment.replies.length > 0
+          ? { ...comment, replies: recursiveAddScore(comment.replies, id) }
+          : comment
+      );
+
     setData({ ...Data, comments: recursiveAddScore(Data.comments, id) });
   };
 
   const minusScore = (id) => {
+    const recursiveDeleteScore = (comments, id) =>
+      comments.map((comment) =>
+        comment.id === id && comment.score > 0
+          ? { ...comment, score: comment.score - 1 }
+          : comment.replies && comment.replies.length > 0
+          ? { ...comment, replies: recursiveDeleteScore(comment.replies, id) }
+          : comment
+      );
     setData({ ...Data, comments: recursiveDeleteScore(Data.comments, id) });
   };
   useEffect(() => {
     console.log(Data);
   }, [Data]);
+
   return (
     <>
       <div className="font-feRubik lg:w-1/2 mx-auto">

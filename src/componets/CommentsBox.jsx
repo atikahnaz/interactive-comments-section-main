@@ -108,7 +108,7 @@ export default function CommentsBox({
   }, [textToEdit]);
 
   const DeleteEdit = ({ id, content }) => {
-    console.log("content rpelise", content);
+    //console.log("content rpelise", content);
     return (
       <>
         <div className="flex items-center cursor-pointer">
@@ -221,7 +221,10 @@ export default function CommentsBox({
                     rows={4}
                   />
                   <div className="w-full">
-                    <button className="bg-fe-moderate-blue px-6 py-3 mb-3 text-fe-white text-base rounded-lg font-medium cursor-pointer hover:opacity-50">
+                    <button
+                      className="bg-fe-moderate-blue px-6 py-3 mb-3 text-fe-white text-base rounded-lg font-medium cursor-pointer hover:opacity-50"
+                      onClick={saveUpdatedText}
+                    >
                       UPDATE
                     </button>
                   </div>
