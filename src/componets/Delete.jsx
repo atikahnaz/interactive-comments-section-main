@@ -1,5 +1,4 @@
 export default function DeleteComment({ id, idComment, cancelDelete }) {
-  console.log("try delete" + id);
   const deleteId = (id) => idComment(id);
   const handleClickCancel = () => {
     cancelDelete();

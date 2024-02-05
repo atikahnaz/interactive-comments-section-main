@@ -28,15 +28,12 @@ export default function CommentsBox({
   const textAreaRef = useRef(null);
 
   const closeReplyBox = () => {
-    console.log("fefefe");
     setShowReplyBox(false);
   };
 
   const ReplyBoxId = (idNumber) => {
     setShowReplyBoxIdBased(idNumber);
     setShowReplyBox(true);
-    console.log("frf");
-    console.log(idNumber);
   };
 
   const addScore = (id) => {
@@ -75,8 +72,6 @@ export default function CommentsBox({
   };
 
   const deletePost = (id) => {
-    console.log("delete");
-    console.log("id" + id);
     setShowDeletePopup(true);
     setIdToDelete(id);
   };
@@ -91,24 +86,16 @@ export default function CommentsBox({
   };
 
   const editText = (id, content) => {
-    // if (textAreaRef.current) {
-    //   textAreaRef.current.focus();
-    // } else {
-    console.log("gaol");
-    console.log(content);
-    // }
     setTextToEdit(content);
     setIdToEdit(id);
     setOpenEditText(true);
   };
 
   useEffect(() => {
-    console.log("chnagibfg");
     console.log(textToEdit);
   }, [textToEdit]);
 
   const DeleteEdit = ({ id, content }) => {
-    //console.log("content rpelise", content);
     return (
       <>
         <div className="flex items-center cursor-pointer">
@@ -131,7 +118,6 @@ export default function CommentsBox({
               className="font-medium text-fe-moderate-blue"
               onClick={() => {
                 editText(id, content);
-                //console.log(textAreaRef.current.focus);
               }}
             >
               Edit
@@ -143,7 +129,6 @@ export default function CommentsBox({
   };
 
   const saveUpdatedText = (text, id) => {
-    console.log(textToEdit, idToEdit);
     saveUpdatedTextComment(text, id);
     setOpenEditText(false);
   };
@@ -319,7 +304,7 @@ export default function CommentsBox({
                         {item.createdAt}
                       </div>
                     </div>
-                    {/**console.log(item.content)*/}
+
                     {Data.currentUser.username === item.user.username ? (
                       <div className="hidden md:flex items-center mb-4">
                         <DeleteEdit id={item.id} content={item.content} />
@@ -330,18 +315,6 @@ export default function CommentsBox({
                       </div>
                     )}
                   </div>
-
-                  {/** edit this line to show update button 
-                  {Data.currentUser.username === item.user.username ? (
-                    <textarea
-                      value={item.content}
-                      className="w-full text-fe-grayish-Blue text-base"
-                    />
-                  ) : (
-                    <div className=" text-fe-grayish-Blue text-base mb-4">
-                      {item.content}
-                    </div>
-                  )}*/}
 
                   {item.id === idToEdit && openEditText ? (
                     <div className="flex-col justify-end">

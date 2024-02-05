@@ -79,10 +79,6 @@ function App() {
     );
 
   const saveUpdatedTextComment = (text, id) => {
-    console.log(text, id);
-    //console.log(updatedComments);
-
-    console.log("rrrrrrrrrrrrrrrrrr");
     setData({
       ...Data,
       comments: recursiveSaveUpdatedText(Data.comments, text, id),
@@ -118,9 +114,6 @@ function App() {
       );
     setData({ ...Data, comments: recursiveDeleteScore(Data.comments, id) });
   };
-  useEffect(() => {
-    console.log(Data);
-  }, [Data]);
 
   return (
     <>
