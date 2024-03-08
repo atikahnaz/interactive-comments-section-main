@@ -42,8 +42,8 @@
           "replyingTo": "maxblagun",
           "user": {
             "image": {
-              "png": "./src/assets/images/avatars/image-ramsesmiron.png",
-              "webp": "./src/assets/images/avatars/image-ramsesmiron.webp"
+              "png": "../assets/images/avatars/image-ramsesmiron.png",
+              "webp": "../assets/images/avatars/image-ramsesmiron.webp"
             },
             "username": "ramsesmiron"
           }
